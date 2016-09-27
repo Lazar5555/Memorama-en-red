@@ -27,6 +27,7 @@ void destroyAll(){
 }
 
 int main(){
+
     bool salir = false;
     al_init();
     al_install_mouse();
@@ -35,9 +36,12 @@ int main(){
     display = al_create_display(WIDTH, HEIGTH);
     event_queue = al_create_event_queue();
     img_main = al_load_bitmap("imgs/main.png");
+    img_mainStart = al_load_bitmap("imgs/main_start.png");
+    img_mainExit = al_load_bitmap("imgs/main_exit.png");
 
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_mouse_event_source());
+
     al_draw_bitmap(img_main, 0, 0, 0);
     al_flip_display();
     while(!salir){
@@ -48,7 +52,21 @@ int main(){
         if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
             salir = true;
 
-    }
+        if(event.type == ALLEGRO_EVENT_MOUSE_AXES){//Main Window
+            //Start Button
+            if(event.mouse.x > 752 && event.mouse.x < 1031 && event.mouse.y > 458 && event.mouse.y < 539){
+                al_draw_bitmap(img_mainStart, 0, 0, 0);
+                al_flip_display();
+            }else if(event.mouse.x > 752 && event.mouse.x < 1031 && event.mouse.y > 560 && event.mouse.y < 637){//Exit Button
+                al_draw_bitmap(img_mainExit, 0, 0, 0);
+                al_flip_display();
+            }else{//DEFAULT
+                al_draw_bitmap(img_main, 0, 0, 0);
+                al_flip_display();
+            }
+        }//End Main AXES
+
+    }//End main looṕ
 
     destroyAll();
 
