@@ -6,3 +6,10 @@
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
 
+1475695745 source:c:\users\kórima\desktop\memorama-en-red\main.cpp
+	<iostream>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+

@@ -13,6 +13,7 @@ using namespace std;
 ALLEGRO_DISPLAY *display;
 ALLEGRO_EVENT_QUEUE *event_queue;
 ALLEGRO_BITMAP *img_main, *img_mainStart, *img_mainExit, *img_getIP, *img_getIPCon, *img_downCards, *img_getIPBox, *img_getIPBoxCon;
+ALLEGRO_BITMAP *img_UbuntuCard, *img_ArchCard, *img_DebianCard, *img_FedoraCard, *img_SuseCard;
 ALLEGRO_FONT *font;
 ALLEGRO_USTR *strIPServer;
 
@@ -34,6 +35,11 @@ void destroyAll(){
     al_destroy_bitmap(img_downCards);
     al_destroy_bitmap(img_getIPBox);
     al_destroy_bitmap(img_getIPBoxCon);
+    al_destroy_bitmap(img_UbuntuCard);
+    al_destroy_bitmap(img_DebianCard);
+    al_destroy_bitmap(img_FedoraCard);
+    al_destroy_bitmap(img_ArchCard);
+    al_destroy_bitmap(img_SuseCard);
     //Fuente
     al_destroy_font(font);
     //Strings
@@ -59,6 +65,11 @@ int main(){
     img_downCards = al_load_bitmap("imgs/DownCards.png");
     img_getIPBox = al_load_bitmap("imgs/getIPBox.png");
     img_getIPBoxCon = al_load_bitmap("imgs/getIPBoxCon.png");
+    img_UbuntuCard = al_load_bitmap("imgs/UbuntuCard.png");
+    img_DebianCard = al_load_bitmap("imgs/DebianCard.png");
+    img_FedoraCard = al_load_bitmap("imgs/FedoraCard.png");
+    img_ArchCard = al_load_bitmap("imgs/ArchCard.png");
+    img_SuseCard = al_load_bitmap("imgs/SuseCard.png");
 
     strIPServer = al_ustr_new("");
     pos = (int)al_ustr_size(strIPServer);
@@ -124,7 +135,7 @@ int main(){
 
                     if(event2.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){///MOUSE DOWN pantalla getIP
 
-                        if(event2.mouse.x > 751 && event2.mouse.x < 1029 && event2.mouse.y > 543 && event2.mouse.y < 620){//Click Conectar
+                        if(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638){///Click Conectar
 
                             bool gameOver = false;
 
@@ -145,8 +156,16 @@ int main(){
 
                                 }
 
-                                if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){
+                                if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){///Clicks en el tablero
 
+                                    if(event.mouse.x > 163 && event.mouse.x < 312 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 1
+                                        al_draw_bitmap(img_UbuntuCard, 163, 132, 0);
+                                        al_flip_display();
+                                    }
+                                    if(event.mouse.x > 342 && event.mouse.x < 491 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 2
+                                        al_destroy_bitmap(img_UbuntuCard);
+                                        al_flip_display();
+                                    }
                                 }
                             }
                         }
