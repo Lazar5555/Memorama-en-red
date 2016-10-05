@@ -12,12 +12,13 @@ using namespace std;
 
 ALLEGRO_DISPLAY *display;
 ALLEGRO_EVENT_QUEUE *event_queue;
-ALLEGRO_BITMAP *img_main, *img_mainStart, *img_mainExit, *img_getIP, *img_getIPCon, *img_downCards;
+ALLEGRO_BITMAP *img_main, *img_mainStart, *img_mainExit, *img_getIP, *img_getIPCon, *img_downCards, *img_getIPBox, *img_getIPBoxCon;
 ALLEGRO_FONT *font;
 ALLEGRO_USTR *strIPServer;
 
 int pos;
 char ipServer[16];
+bool clickOnBox = false;//Variable para saber si el cuadro de IP ha sido clickeado
 
 void destroyAll(){
     //DISPLAY
@@ -31,6 +32,8 @@ void destroyAll(){
     al_destroy_bitmap(img_getIP);
     al_destroy_bitmap(img_getIPCon);
     al_destroy_bitmap(img_downCards);
+    al_destroy_bitmap(img_getIPBox);
+    al_destroy_bitmap(img_getIPBoxCon);
     //Fuente
     al_destroy_font(font);
     //Strings
@@ -54,6 +57,8 @@ int main(){
     img_getIP = al_load_bitmap("imgs/getIP.png");
     img_getIPCon = al_load_bitmap("imgs/getIPCon.png");
     img_downCards = al_load_bitmap("imgs/DownCards.png");
+    img_getIPBox = al_load_bitmap("imgs/getIPBox.png");
+    img_getIPBoxCon = al_load_bitmap("imgs/getIPBoxCon.png");
 
     strIPServer = al_ustr_new("");
     pos = (int)al_ustr_size(strIPServer);
@@ -105,34 +110,53 @@ int main(){
 
                     if(event2.type == ALLEGRO_EVENT_MOUSE_AXES){
 
-                        if(event2.mouse.x > 751 && event2.mouse.x < 1029 && event2.mouse.y > 543 && event2.mouse.y < 620){//Connect Button
+                        if(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638){
                             al_draw_bitmap(img_getIPCon, 0, 0, 0);
                             al_flip_display();
-                        }
-                        else{
+                        }else if(clickOnBox == true){
+                            al_draw_bitmap(img_getIPBox, 0, 0, 0);
+                            al_flip_display();
+                        }else{
                             al_draw_bitmap(img_getIP, 0, 0, 0);
                             al_flip_display();
                         }
                     }
 
-                    if(event2.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){
+                    if(event2.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){///MOUSE DOWN pantalla getIP
 
                         if(event2.mouse.x > 751 && event2.mouse.x < 1029 && event2.mouse.y > 543 && event2.mouse.y < 620){//Click Conectar
 
-                            //bool terminar = false;
+                            bool gameOver = false;
 
                             al_draw_bitmap(img_downCards, 0, 0, 0);
                             al_flip_display();
-                            //while(!terminar){
+                            while(!gameOver){
 
-                            //}
+                                ALLEGRO_EVENT event;
+                                al_wait_for_event(event_queue, &event);
+
+                                if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
+                                    gameOver = true;
+                                    salirServerAddr = true;
+                                    salir = true;
+                                }
+
+                                if(event.type == ALLEGRO_EVENT_MOUSE_AXES){
+
+                                }
+
+                                if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){
+
+                                }
+                            }
                         }
                         if(event2.mouse.x > 341 && event2.mouse.x < 768 && event2.mouse.y > 344 &&event2.mouse.y < 424){//Click cuadro IP
-                                al_draw_ustr(font, al_map_rgb_f(0, 0, 0), 330, 170, 0, strIPServer);
+                                clickOnBox = true;
+                                al_draw_bitmap(img_getIPBox, 0, 0, 0);
                                 al_flip_display();
                         }
-                    }//Fin button down
 
+                    }//Fin mouse down pantalla getIP
 
                 }
             }//Fin click comenzar

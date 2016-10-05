@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1475526822 source:/home/l-e/Documentos/CUCEI/Programación para internet 2/Proyecto/Memorama/main.cpp
+1475625394 source:/home/l-e/Documentos/CUCEI/Programación para internet 2/Proyecto/Memorama/main.cpp
 	<iostream>
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
