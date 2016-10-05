@@ -13,3 +13,10 @@
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
 
+1475714389 source:c:\users\ekt\documents\cucei\6°\programación para internet\proyecto\memorama-en-red\main.cpp
+	<iostream>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+
