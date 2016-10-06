@@ -20,3 +20,10 @@
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
 
+1475772761 source:/home/eleazar/Escritorio/Memorama-en-red/main.cpp
+	<iostream>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+

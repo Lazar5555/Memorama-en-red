@@ -72,6 +72,7 @@ int main(){
     img_ArchCard = al_load_bitmap("imgs/ArchCard.png");
     img_SuseCard = al_load_bitmap("imgs/SuseCard.png");
     img_DownCard = al_load_bitmap("imgs/DownCard.png");
+    font = al_create_builtin_font();
 
     strIPServer = al_ustr_new("");
     pos = (int)al_ustr_size(strIPServer);
