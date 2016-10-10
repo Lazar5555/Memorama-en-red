@@ -27,3 +27,10 @@
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
 
+1476142585 source:c:\users\ekt\desktop\memorama-en-red\main.cpp
+	<iostream>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+

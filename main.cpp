@@ -15,11 +15,10 @@ ALLEGRO_EVENT_QUEUE *event_queue;
 ALLEGRO_BITMAP *img_main, *img_mainStart, *img_mainExit, *img_getIP, *img_getIPCon, *img_Tablero, *img_getIPBox, *img_getIPBoxCon;
 ALLEGRO_BITMAP *img_UbuntuCard, *img_ArchCard, *img_DebianCard, *img_FedoraCard, *img_SuseCard, *img_DownCard;
 ALLEGRO_FONT *font;
-ALLEGRO_USTR *strIPServer;
+ALLEGRO_USTR *str_IPServer;
 
 int pos;
 char ipServer[16];
-bool clickOnBox = false;//Variable para saber si el cuadro de IP ha sido clickeado
 
 void destroyAll(){
     //DISPLAY
@@ -44,12 +43,14 @@ void destroyAll(){
     //Fuente
     al_destroy_font(font);
     //Strings
-    al_ustr_free(strIPServer);
+    al_ustr_free(str_IPServer);
 }
 
 int main(){
 
     bool salir = false;
+    bool clickOnBox = false;
+
     al_init();
     al_install_mouse();
     al_install_keyboard();
@@ -74,8 +75,8 @@ int main(){
     img_DownCard = al_load_bitmap("imgs/DownCard.png");
     font = al_create_builtin_font();
 
-    strIPServer = al_ustr_new("");
-    pos = (int)al_ustr_size(strIPServer);
+    str_IPServer = al_ustr_new("");
+    pos = (int)al_ustr_size(str_IPServer);
 
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_mouse_event_source());
@@ -107,7 +108,7 @@ int main(){
 
         if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){
 
-            if(event.mouse.x > 752 && event.mouse.x < 1031 && event.mouse.y > 458 && event.mouse.y < 539){//Click Comenzar
+            if(event.mouse.x > 752 && event.mouse.x < 1031 && event.mouse.y > 458 && event.mouse.y < 539){///Click Comenzar
 
                 bool salirServerAddr = false;
                 int contchar = 0;
@@ -263,6 +264,32 @@ int main(){
                         }
 
                     }//Fin mouse down pantalla getIP
+
+                    if(event2.type == ALLEGRO_EVENT_KEY_CHAR){///KEY_CHAR en la pantalla getIP
+                        if(event2.keyboard.unichar >= 32){
+                            pos += al_ustr_append_chr(str_IPServer, event2.keyboard.unichar);
+                            if(contchar < 16){
+                                ipServer[contchar] = event2.keyboard.unichar;
+                                contchar ++;
+                            }
+                        }else if(event2.keyboard.keycode == ALLEGRO_KEY_BACKSPACE) {
+                            if(al_ustr_prev(str_IPServer, &pos)){
+                                al_ustr_truncate(str_IPServer, pos);
+                                if(contchar > -1){
+                                    ipServer[contchar] = '\0';
+                                    contchar --;
+                                    al_draw_bitmap(img_getIPBox, 0, 0, 0);
+                                    al_draw_ustr(font, al_map_rgb_f(0, 0, 0), 398, 395, 0, str_IPServer);
+                                    al_flip_display();
+                                }
+                            }
+                        }
+
+                        al_draw_bitmap(img_getIPBox, 0, 0, 0);
+                        al_draw_ustr(font, al_map_rgb_f(0, 0, 0), 398, 395, 0, str_IPServer);
+                        al_flip_display();
+                        cout<<ipServer<<endl;
+                    }///Fin evento KEY_CHAR
 
                 }
             }//Fin click comenzar
