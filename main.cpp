@@ -1,4 +1,7 @@
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -19,6 +22,9 @@ ALLEGRO_USTR *str_IPServer;
 
 int pos;
 char ipServer[16];
+char str[17];
+
+void manipular_entrada(ALLEGRO_EVENT evento);
 
 void destroyAll(){
     //DISPLAY
@@ -45,6 +51,7 @@ void destroyAll(){
     //Strings
     al_ustr_free(str_IPServer);
 }
+
 
 int main(){
 
@@ -73,7 +80,8 @@ int main(){
     img_ArchCard = al_load_bitmap("imgs/ArchCard.png");
     img_SuseCard = al_load_bitmap("imgs/SuseCard.png");
     img_DownCard = al_load_bitmap("imgs/DownCard.png");
-    font = al_create_builtin_font();
+    //font = al_create_builtin_font();
+    font = al_load_font("fuente.ttf", 38, 0);
 
     str_IPServer = al_ustr_new("");
     pos = (int)al_ustr_size(str_IPServer);
@@ -138,6 +146,12 @@ int main(){
                     }
 
                     if(event2.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){///MOUSE DOWN pantalla getIP
+
+                        if(event2.mouse.x > 341 && event2.mouse.x < 768 && event2.mouse.y > 344 &&event2.mouse.y < 424){///Click cuadro IP
+                                clickOnBox = true;
+                                al_draw_bitmap(img_getIPBox, 0, 0, 0);
+                                al_flip_display();
+                        }
 
                         if(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638){///Click Conectar
 
@@ -257,15 +271,10 @@ int main(){
                                 }
                             }
                         }
-                        if(event2.mouse.x > 341 && event2.mouse.x < 768 && event2.mouse.y > 344 &&event2.mouse.y < 424){///Click cuadro IP
-                                clickOnBox = true;
-                                al_draw_bitmap(img_getIPBox, 0, 0, 0);
-                                al_flip_display();
-                        }
 
                     }//Fin mouse down pantalla getIP
 
-                    if(event2.type == ALLEGRO_EVENT_KEY_CHAR){///KEY_CHAR en la pantalla getIP
+                    /*if(event2.type == ALLEGRO_EVENT_KEY_CHAR){///KEY_CHAR en la pantalla getIP
                         if(event2.keyboard.unichar >= 32){
                             pos += al_ustr_append_chr(str_IPServer, event2.keyboard.unichar);
                             if(contchar < 16){
@@ -278,9 +287,6 @@ int main(){
                                 if(contchar > -1){
                                     ipServer[contchar] = '\0';
                                     contchar --;
-                                    al_draw_bitmap(img_getIPBox, 0, 0, 0);
-                                    al_draw_ustr(font, al_map_rgb_f(0, 0, 0), 398, 395, 0, str_IPServer);
-                                    al_flip_display();
                                 }
                             }
                         }
@@ -289,7 +295,47 @@ int main(){
                         al_draw_ustr(font, al_map_rgb_f(0, 0, 0), 398, 395, 0, str_IPServer);
                         al_flip_display();
                         cout<<ipServer<<endl;
-                    }///Fin evento KEY_CHAR
+                    }///Fin evento KEY_CHAR*/
+
+                    //-----------------------------------------------
+
+                    if(event2.type == ALLEGRO_EVENT_KEY_CHAR){
+                        if (strlen(str) <= 16)
+                            {
+                                char temp[] = {event2.keyboard.unichar, '\0'};
+                                if (event2.keyboard.unichar == ' ')
+                                {
+                                    strcat(str, temp);
+                                }
+                                else if (event2.keyboard.unichar >= '0' &&
+                                         event2.keyboard.unichar <= '9')
+                                {
+                                    strcat(str, temp);
+                                }
+                                else if (event2.keyboard.unichar >= 'A' &&
+                                         event2.keyboard.unichar <= 'Z')
+                                {
+                                    strcat(str, temp);
+                                }
+                                else if (event2.keyboard.unichar >= 'a' &&
+                                         event2.keyboard.unichar <= 'z')
+                                {
+                                    strcat(str, temp);
+                                }
+                                else if(event2.keyboard.unichar == '.'){
+                                    strcat(str, temp);
+                                }
+                            }
+
+                            if (event2.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && strlen(str) != 0)
+                            {
+                                str[strlen(str) - 1] = '\0';
+                            }
+
+                            al_draw_text(font, al_map_rgb(0, 0, 0), 398, 395, 0, str);
+                            al_flip_display();
+                            cout<<str<<endl;
+                    }
 
                 }
             }//Fin click comenzar
@@ -303,3 +349,41 @@ int main(){
 
     return 0;
 }
+
+void manipular_entrada(ALLEGRO_EVENT evento)
+{
+
+        if (strlen(str) <= 16)
+        {
+            char temp[] = {evento.keyboard.unichar, '\0'};
+            if (evento.keyboard.unichar == ' ')
+            {
+                strcat(str, temp);
+            }
+            else if (evento.keyboard.unichar >= '0' &&
+                     evento.keyboard.unichar <= '9')
+            {
+                strcat(str, temp);
+            }
+            else if (evento.keyboard.unichar >= 'A' &&
+                     evento.keyboard.unichar <= 'Z')
+            {
+                strcat(str, temp);
+            }
+            else if (evento.keyboard.unichar >= 'a' &&
+                     evento.keyboard.unichar <= 'z')
+            {
+                strcat(str, temp);
+            }
+        }
+
+        if (evento.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && strlen(str) != 0)
+        {
+            str[strlen(str) - 1] = '\0';
+        }
+
+        al_draw_text(font, al_map_rgb(255, 255, 255), 50,
+                     50,
+                     0, str);
+}
+
