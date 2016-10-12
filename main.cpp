@@ -301,46 +301,30 @@ int main(){
 
                     //-----------------------------------------------
 
-                    if(event2.type == ALLEGRO_EVENT_KEY_CHAR && clickOnBox == true){
-                            //int aux;
-                        if (strlen(str) <= 16)
-                            {
-                                //aux = event2.keyboard.unichar
-                                char temp[] = {event2.keyboard.unichar, '\0'};
-                                if (event2.keyboard.unichar == ' ')
-                                {
-                                    strcat(str, temp);
-                                }
-                                else if (event2.keyboard.unichar >= '0' &&
-                                         event2.keyboard.unichar <= '9')
-                                {
-                                    strcat(str, temp);
-                                }
-                                else if (event2.keyboard.unichar >= 'A' &&
-                                         event2.keyboard.unichar <= 'Z')
-                                {
-                                    strcat(str, temp);
-                                }
-                                else if (event2.keyboard.unichar >= 'a' &&
-                                         event2.keyboard.unichar <= 'z')
-                                {
-                                    strcat(str, temp);
-                                }
-                                else if(event2.keyboard.unichar == '.'){
-                                    strcat(str, temp);
-                                }
-                            }
+                    if(event2.type == ALLEGRO_EVENT_KEY_CHAR && clickOnBox == true){///EVENTO KEY CHAR
 
-                            if (event2.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && strlen(str) != 0)
-                            {
-                                str[strlen(str) - 1] = '\0';
-                            }
+                        if(strlen(str) <= 16){
+                            char temp[] = {event2.keyboard.unichar, '\0'};
+                            if (event2.keyboard.unichar == ' ')
+                                strcat(str, temp);
+                            else if(event2.keyboard.unichar >= '0' && event2.keyboard.unichar <= '9')
+                                strcat(str, temp);
+                            else if(event2.keyboard.unichar >= 'A' && event2.keyboard.unichar <= 'Z')
+                                strcat(str, temp);
+                            else if(event2.keyboard.unichar >= 'a' && event2.keyboard.unichar <= 'z')
+                                strcat(str, temp);
+                            else if(event2.keyboard.unichar == '.')
+                                strcat(str, temp);
+                        }
 
-                            al_draw_bitmap(img_getIPBox, 0, 0, 0);
-                            al_draw_text(font, al_map_rgb(0, 0, 0), 398, 395, 0, str);
-                            al_flip_display();
-                            cout<<str<<endl;
-                    }
+                        if(event2.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && strlen(str) != 0)
+                            str[strlen(str) - 1] = '\0';
+
+                        al_draw_bitmap(img_getIPBox, 0, 0, 0);
+                        al_draw_text(font, al_map_rgb(0, 0, 0), WIDTH/2, 370, ALLEGRO_ALIGN_CENTRE, str);
+                        al_flip_display();
+                        cout<<str<<endl;
+                    }///Fin evento KEY CHAR
 
                 }
             }//Fin click comenzar
