@@ -63,6 +63,7 @@ int main(){
     al_install_keyboard();
     al_init_image_addon();
     al_init_font_addon();
+    al_init_ttf_addon();
 
     display = al_create_display(WIDTH, HEIGTH);
     event_queue = al_create_event_queue();
@@ -82,6 +83,7 @@ int main(){
     img_DownCard = al_load_bitmap("imgs/DownCard.png");
     //font = al_create_builtin_font();
     font = al_load_font("fuente.ttf", 38, 0);
+    strcpy(str, "");
 
     str_IPServer = al_ustr_new("");
     pos = (int)al_ustr_size(str_IPServer);
@@ -299,9 +301,11 @@ int main(){
 
                     //-----------------------------------------------
 
-                    if(event2.type == ALLEGRO_EVENT_KEY_CHAR){
+                    if(event2.type == ALLEGRO_EVENT_KEY_CHAR && clickOnBox == true){
+                            //int aux;
                         if (strlen(str) <= 16)
                             {
+                                //aux = event2.keyboard.unichar
                                 char temp[] = {event2.keyboard.unichar, '\0'};
                                 if (event2.keyboard.unichar == ' ')
                                 {
@@ -332,6 +336,7 @@ int main(){
                                 str[strlen(str) - 1] = '\0';
                             }
 
+                            al_draw_bitmap(img_getIPBox, 0, 0, 0);
                             al_draw_text(font, al_map_rgb(0, 0, 0), 398, 395, 0, str);
                             al_flip_display();
                             cout<<str<<endl;
@@ -350,7 +355,7 @@ int main(){
     return 0;
 }
 
-void manipular_entrada(ALLEGRO_EVENT evento)
+/*void manipular_entrada(ALLEGRO_EVENT evento)
 {
 
         if (strlen(str) <= 16)
@@ -385,5 +390,5 @@ void manipular_entrada(ALLEGRO_EVENT evento)
         al_draw_text(font, al_map_rgb(255, 255, 255), 50,
                      50,
                      0, str);
-}
+}*/
 
