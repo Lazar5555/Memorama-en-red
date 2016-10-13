@@ -18,7 +18,7 @@ ALLEGRO_EVENT_QUEUE *event_queue;
 ALLEGRO_BITMAP *img_main, *img_mainStart, *img_mainExit, *img_getIP, *img_getIPCon, *img_Tablero, *img_getIPBox, *img_getIPBoxCon;
 ALLEGRO_BITMAP *img_UbuntuCard, *img_ArchCard, *img_DebianCard, *img_FedoraCard, *img_SuseCard, *img_DownCard;
 ALLEGRO_FONT *font;
-ALLEGRO_USTR *str_IPServer;
+ALLEGRO_TIMER *timer;
 
 int pos;
 char ipServer[16];
@@ -48,8 +48,9 @@ void destroyAll(){
     al_destroy_bitmap(img_DownCard);
     //Fuente
     al_destroy_font(font);
-    //Strings
-    al_ustr_free(str_IPServer);
+
+    //Timer
+    al_destroy_timer(timer);
 }
 
 
@@ -57,6 +58,9 @@ int main(){
 
     bool salir = false;
     bool clickOnBox = false;
+
+    const float FPS = 60;
+    bool redraw = true;
 
     al_init();
     al_install_mouse();
@@ -67,6 +71,8 @@ int main(){
 
     display = al_create_display(WIDTH, HEIGTH);
     event_queue = al_create_event_queue();
+    timer = al_create_timer(1.0 / FPS);
+
     img_main = al_load_bitmap("imgs/main.png");
     img_mainStart = al_load_bitmap("imgs/main_start.png");
     img_mainExit = al_load_bitmap("imgs/main_exit.png");
@@ -87,9 +93,11 @@ int main(){
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_mouse_event_source());
     al_register_event_source(event_queue, al_get_keyboard_event_source());
+    al_register_event_source(event_queue, al_get_timer_event_source(timer));
 
     al_draw_bitmap(img_main, 0, 0, 0);
     al_flip_display();
+    al_start_timer(timer);
     while(!salir){
 
         ALLEGRO_EVENT event;
@@ -98,15 +106,21 @@ int main(){
         if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
             salir = true;
 
+        if(event.type == ALLEGRO_EVENT_TIMER)
+            redraw = true;
+
         if(event.type == ALLEGRO_EVENT_MOUSE_AXES){//Main Window
             //Start Button
-            if(event.mouse.x > 752 && event.mouse.x < 1031 && event.mouse.y > 458 && event.mouse.y < 539){//Start Button
+            if((event.mouse.x > 752 && event.mouse.x < 1031 && event.mouse.y > 458 && event.mouse.y < 539) && redraw){//Start Button
+                redraw = false;
                 al_draw_bitmap(img_mainStart, 0, 0, 0);
                 al_flip_display();
-            }else if(event.mouse.x > 752 && event.mouse.x < 1031 && event.mouse.y > 560 && event.mouse.y < 637){//Exit Button
+            }else if(event.mouse.x > 752 && event.mouse.x < 1031 && event.mouse.y > 560 && event.mouse.y < 637 && redraw){//Exit Button
+                redraw = false;
                 al_draw_bitmap(img_mainExit, 0, 0, 0);
                 al_flip_display();
-            }else{//DEFAULT
+            }else if(redraw){//DEFAULT
+                redraw = false;
                 al_draw_bitmap(img_main, 0, 0, 0);
                 al_flip_display();
             }
@@ -281,7 +295,7 @@ int main(){
 
                     //-----------------------------------------------
 
-                    if(event2.type == ALLEGRO_EVENT_KEY_CHAR && clickOnBox == true){///EVENTO KEY CHAR
+                    if(event2.type == ALLEGRO_EVENT_KEY_CHAR && clickOnBox){///EVENTO KEY CHAR
 
                         if(strlen(str) <= 16){
                             char temp[] = {event2.keyboard.unichar, '\0'};
@@ -300,10 +314,13 @@ int main(){
                         if(event2.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && strlen(str) != 0)
                             str[strlen(str) - 1] = '\0';
 
-                        al_draw_bitmap(img_getIPBox, 0, 0, 0);
-                        al_draw_text(font, al_map_rgb(0, 0, 0), 600, 360, ALLEGRO_ALIGN_CENTRE, str);
-                        al_flip_display();
+                        if(clickOnBox){
+                            al_draw_bitmap(img_getIPBox, 0, 0, 0);
+                            al_draw_text(font, al_map_rgb(0, 0, 0), 600, 360, ALLEGRO_ALIGN_CENTRE, str);
+                            al_flip_display();
                         cout<<str<<endl;
+                        }
+
                     }///Fin evento KEY CHAR
 
                 }
@@ -311,6 +328,12 @@ int main(){
             if(event.mouse.x > 752 && event.mouse.x < 1031 && event.mouse.y > 560 && event.mouse.y < 637)//Click Salir
                 salir = true;
         }
+
+        /*if(redraw){
+            redraw = false;
+            al_draw_bitmap(img_main, 0, 0, 0);
+            al_flip_display();
+        }*/
 
     }//End main looṕ
 
