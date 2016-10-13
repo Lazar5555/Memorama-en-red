@@ -81,12 +81,8 @@ int main(){
     img_ArchCard = al_load_bitmap("imgs/ArchCard.png");
     img_SuseCard = al_load_bitmap("imgs/SuseCard.png");
     img_DownCard = al_load_bitmap("imgs/DownCard.png");
-    //font = al_create_builtin_font();
-    font = al_load_font("fuente.ttf", 38, 0);
+    font = al_load_font("fonts/fuente_pincel.ttf", 68, 0);
     strcpy(str, "");
-
-    str_IPServer = al_ustr_new("");
-    pos = (int)al_ustr_size(str_IPServer);
 
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_mouse_event_source());
@@ -137,12 +133,19 @@ int main(){
 
                         if(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638){
                             al_draw_bitmap(img_getIPCon, 0, 0, 0);
+                            al_draw_text(font, al_map_rgb(0, 0, 0), 600, 360, ALLEGRO_ALIGN_CENTRE, str);
                             al_flip_display();
                         }else if(clickOnBox == true){
                             al_draw_bitmap(img_getIPBox, 0, 0, 0);
                             al_flip_display();
                         }else{
                             al_draw_bitmap(img_getIP, 0, 0, 0);
+                            al_flip_display();
+                        }
+
+                        if(clickOnBox == true && !(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638)){
+                            al_draw_bitmap(img_getIPBox, 0, 0, 0);
+                            al_draw_text(font, al_map_rgb(0, 0, 0), 600, 360, ALLEGRO_ALIGN_CENTRE, str);
                             al_flip_display();
                         }
                     }
@@ -276,29 +279,6 @@ int main(){
 
                     }//Fin mouse down pantalla getIP
 
-                    /*if(event2.type == ALLEGRO_EVENT_KEY_CHAR){///KEY_CHAR en la pantalla getIP
-                        if(event2.keyboard.unichar >= 32){
-                            pos += al_ustr_append_chr(str_IPServer, event2.keyboard.unichar);
-                            if(contchar < 16){
-                                ipServer[contchar] = event2.keyboard.unichar;
-                                contchar ++;
-                            }
-                        }else if(event2.keyboard.keycode == ALLEGRO_KEY_BACKSPACE) {
-                            if(al_ustr_prev(str_IPServer, &pos)){
-                                al_ustr_truncate(str_IPServer, pos);
-                                if(contchar > -1){
-                                    ipServer[contchar] = '\0';
-                                    contchar --;
-                                }
-                            }
-                        }
-
-                        al_draw_bitmap(img_getIPBox, 0, 0, 0);
-                        al_draw_ustr(font, al_map_rgb_f(0, 0, 0), 398, 395, 0, str_IPServer);
-                        al_flip_display();
-                        cout<<ipServer<<endl;
-                    }///Fin evento KEY_CHAR*/
-
                     //-----------------------------------------------
 
                     if(event2.type == ALLEGRO_EVENT_KEY_CHAR && clickOnBox == true){///EVENTO KEY CHAR
@@ -321,7 +301,7 @@ int main(){
                             str[strlen(str) - 1] = '\0';
 
                         al_draw_bitmap(img_getIPBox, 0, 0, 0);
-                        al_draw_text(font, al_map_rgb(0, 0, 0), WIDTH/2, 370, ALLEGRO_ALIGN_CENTRE, str);
+                        al_draw_text(font, al_map_rgb(0, 0, 0), 600, 360, ALLEGRO_ALIGN_CENTRE, str);
                         al_flip_display();
                         cout<<str<<endl;
                     }///Fin evento KEY CHAR
