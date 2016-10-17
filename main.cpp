@@ -10,6 +10,7 @@
 
 #define WIDTH 1200
 #define HEIGTH 700
+#define FPS 60
 
 using namespace std;
 
@@ -58,8 +59,6 @@ int main(){
 
     bool salir = false;
     bool clickOnBox = false;
-
-    const float FPS = 60;
     bool redraw = true;
 
     al_init();
@@ -131,7 +130,7 @@ int main(){
             if(event.mouse.x > 752 && event.mouse.x < 1031 && event.mouse.y > 458 && event.mouse.y < 539){///Click Comenzar
 
                 bool salirServerAddr = false;
-                int contchar = 0;
+                redraw = true;
 
                 al_draw_bitmap(img_getIP, 0, 0, 0);
                 al_flip_display();
@@ -143,30 +142,37 @@ int main(){
                         salirServerAddr = true;
                         salir = true;
 
+                    if(event2.type == ALLEGRO_EVENT_TIMER)
+                        redraw = true;
+
                     if(event2.type == ALLEGRO_EVENT_MOUSE_AXES){
 
-                        if(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638){
+                        if(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638 && redraw){
+                            redraw = false;
                             al_draw_bitmap(img_getIPCon, 0, 0, 0);
                             al_draw_text(font, al_map_rgb(0, 0, 0), 600, 360, ALLEGRO_ALIGN_CENTRE, str);
                             al_flip_display();
-                        }else if(clickOnBox == true){
+                        }else if(clickOnBox == true && redraw){
+                            redraw = false;
                             al_draw_bitmap(img_getIPBox, 0, 0, 0);
+                            al_draw_text(font, al_map_rgb(0, 0, 0), 600, 360, ALLEGRO_ALIGN_CENTRE, str);
                             al_flip_display();
-                        }else{
+                        }else if(redraw){
+                            redraw = false;
                             al_draw_bitmap(img_getIP, 0, 0, 0);
                             al_flip_display();
                         }
 
-                        if(clickOnBox == true && !(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638)){
+                        /*if(clickOnBox == true && !(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638)){//Muestra el contendo del IPBox cada que se mueva el mouse
                             al_draw_bitmap(img_getIPBox, 0, 0, 0);
                             al_draw_text(font, al_map_rgb(0, 0, 0), 600, 360, ALLEGRO_ALIGN_CENTRE, str);
                             al_flip_display();
-                        }
+                        }*/
                     }
 
                     if(event2.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){///MOUSE DOWN pantalla getIP
 
-                        if(event2.mouse.x > 341 && event2.mouse.x < 768 && event2.mouse.y > 344 &&event2.mouse.y < 424){///Click cuadro IP
+                        if(event2.mouse.x > 341 && event2.mouse.x < 768 && event2.mouse.y > 344 &&event2.mouse.y < 424){///Click IPBox
                                 clickOnBox = true;
                                 al_draw_bitmap(img_getIPBox, 0, 0, 0);
                                 al_flip_display();
@@ -174,6 +180,7 @@ int main(){
 
                         if(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638){///Click Conectar
 
+                            redraw = true;
                             bool gameOver = false;
                             bool card1 = false, card2 = false, card3 = false, card4 = false, card5 = false;
                             bool card6 = false, card7 = false, card8 = false, card9 = false, card10 = false;
@@ -185,47 +192,89 @@ int main(){
                                 ALLEGRO_EVENT event;
                                 al_wait_for_event(event_queue, &event);
 
-                                if(card1){
+                                if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
+                                    gameOver = true;
+                                    salirServerAddr = true;
+                                    salir = true;
+                                }
+
+                                if(event.type == ALLEGRO_EVENT_TIMER)
+                                    redraw = true;
+
+                                if(event.type == ALLEGRO_EVENT_MOUSE_AXES){
+
+                                }
+
+                                if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){///Clicks en el tablero
+
+                                    if(event.mouse.x > 163 && event.mouse.x < 312 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 1
+                                        card1 = true;
+                                    }
+                                    if(event.mouse.x > 342 && event.mouse.x < 491 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 2
+                                        card2 = true;
+                                    }
+                                    if(event.mouse.x > 515 && event.mouse.x < 664 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 3
+                                        card3 = true;
+                                    }
+                                    if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 4
+                                        card4 = true;
+                                    }
+                                    if(event.mouse.x > 880 && event.mouse.x < 1029 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 4
+                                        card5 = true;
+                                    }
+                                }
+
+                                if(card1){ //&& redraw){
+                                    //redraw = false;
                                     al_draw_bitmap(img_UbuntuCard, 163, 132, 0);
                                     al_flip_display();
-                                }else{
+                                }else if(!card1){ //&& redraw){
+                                    //redraw = false;
                                     al_draw_bitmap(img_DownCard, 163, 132, 0);
                                     al_flip_display();
                                 }
 
-                                if(card2){
+                                if(card2){ //&& redraw){
+                                    //redraw = false;
                                     al_draw_bitmap(img_DebianCard, 342, 132, 0);
                                     al_flip_display();
-                                }else{
+                                }else if(!card1){ //&& redraw){
+                                    //redraw = false;
                                     al_draw_bitmap(img_DownCard, 342, 132, 0);
                                     al_flip_display();
                                 }
 
-                                if(card3){
+                                if(card3){ //&& redraw){
+                                    //redraw = false;
                                     al_draw_bitmap(img_ArchCard, 515, 132, 0);
                                     al_flip_display();
-                                }else{
+                                }else if(!card3){ //&& redraw){
+                                    //redraw = false;
                                     al_draw_bitmap(img_DownCard, 515, 132, 0);
                                     al_flip_display();
                                 }
 
-                                if(card4){
+                                if(card4){ //&& redraw){
+                                    //redraw = false;
                                     al_draw_bitmap(img_SuseCard, 699, 132, 0);
                                     al_flip_display();
-                                }else{
+                                }else if(!card4){ //&& redraw){
+                                    //redraw = false;
                                     al_draw_bitmap(img_DownCard, 699, 132, 0);
                                     al_flip_display();
                                 }
 
-                                if(card5){
+                                if(card5){ //&& redraw){
+                                    //redraw = false;
                                     al_draw_bitmap(img_FedoraCard, 880, 132, 0);
                                     al_flip_display();
-                                }else{
+                                }else if(!card5){ //&& redraw){
+                                    //redraw = false;
                                     al_draw_bitmap(img_DownCard, 880, 132, 0);
                                     al_flip_display();
                                 }
                                 ///*********************///
-                                if(card6){
+                                if(card6 && redraw){
 
                                 }else{
                                     al_draw_bitmap(img_DownCard, 162, 356, 0);
@@ -260,34 +309,6 @@ int main(){
                                     al_flip_display();
                                 }
 
-                                if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
-                                    gameOver = true;
-                                    salirServerAddr = true;
-                                    salir = true;
-                                }
-
-                                if(event.type == ALLEGRO_EVENT_MOUSE_AXES){
-
-                                }
-
-                                if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){///Clicks en el tablero
-
-                                    if(event.mouse.x > 163 && event.mouse.x < 312 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 1
-                                        card1 = true;
-                                    }
-                                    if(event.mouse.x > 342 && event.mouse.x < 491 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 2
-                                        card2 = true;
-                                    }
-                                    if(event.mouse.x > 515 && event.mouse.x < 664 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 3
-                                        card3 = true;
-                                    }
-                                    if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 4
-                                        card4 = true;
-                                    }
-                                    if(event.mouse.x > 880 && event.mouse.x < 1029 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 4
-                                        card5 = true;
-                                    }
-                                }
                             }
                         }
 

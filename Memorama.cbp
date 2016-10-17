@@ -15,7 +15,18 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="liballegro-5.0.10-monolith-mt.a" />
+					<Add library="../../../../usr/lib/liballegro_dialog.so" />
+					<Add library="../../../../usr/lib/liballegro_main.so" />
+					<Add library="../../../../usr/lib/liballegro_color.so" />
+					<Add library="../../../../usr/lib/liballegro_memfile.so" />
+					<Add library="../../../../usr/lib/liballegro_physfs.so" />
+					<Add library="../../../../usr/lib/liballegro_ttf.so" />
+					<Add library="../../../../usr/lib/liballegro_acodec.so" />
+					<Add library="../../../../usr/lib/liballegro_audio.so" />
+					<Add library="../../../../usr/lib/liballegro_font.so" />
+					<Add library="../../../../usr/lib/liballegro_image.so" />
+					<Add library="../../../../usr/lib/liballegro_primitives.so" />
+					<Add library="../../../../usr/lib/liballegro.so" />
 				</Linker>
 			</Target>
 			<Target title="Release">

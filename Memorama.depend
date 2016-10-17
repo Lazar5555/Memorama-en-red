@@ -37,3 +37,13 @@
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
 
+1476666486 source:/home/l-e/Escritorio/Memorama-en-red/main.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+
