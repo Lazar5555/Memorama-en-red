@@ -12,20 +12,21 @@
 #define HEIGTH 700
 #define FPS 60
 
+#define DOWNCARD 0
+#define UBUNTU 1
+#define DEBIAN 2
+#define FEDORA 3
+#define ARCH 4
+#define SUSE 5
+
 using namespace std;
 
 ALLEGRO_DISPLAY *display;
 ALLEGRO_EVENT_QUEUE *event_queue;
 ALLEGRO_BITMAP *img_main, *img_mainStart, *img_mainExit, *img_getIP, *img_getIPCon, *img_Tablero, *img_getIPBox, *img_getIPBoxCon;
-ALLEGRO_BITMAP *img_UbuntuCard, *img_ArchCard, *img_DebianCard, *img_FedoraCard, *img_SuseCard, *img_DownCard;
+ALLEGRO_BITMAP *img_Cards[6];
 ALLEGRO_FONT *font;
 ALLEGRO_TIMER *timer;
-
-int pos;
-char ipServer[16];
-char str[17];
-
-void manipular_entrada(ALLEGRO_EVENT evento);
 
 void destroyAll(){
     //DISPLAY
@@ -41,12 +42,12 @@ void destroyAll(){
     al_destroy_bitmap(img_Tablero);
     al_destroy_bitmap(img_getIPBox);
     al_destroy_bitmap(img_getIPBoxCon);
-    al_destroy_bitmap(img_UbuntuCard);
-    al_destroy_bitmap(img_DebianCard);
-    al_destroy_bitmap(img_FedoraCard);
-    al_destroy_bitmap(img_ArchCard);
-    al_destroy_bitmap(img_SuseCard);
-    al_destroy_bitmap(img_DownCard);
+    al_destroy_bitmap(img_Cards[DOWNCARD]);
+    al_destroy_bitmap(img_Cards[UBUNTU]);
+    al_destroy_bitmap(img_Cards[DEBIAN]);
+    al_destroy_bitmap(img_Cards[FEDORA]);
+    al_destroy_bitmap(img_Cards[ARCH]);
+    al_destroy_bitmap(img_Cards[SUSE]);
     //Fuente
     al_destroy_font(font);
 
@@ -60,6 +61,7 @@ int main(){
     bool salir = false;
     bool clickOnBox = false;
     bool redraw = true;
+    char str[17];
 
     al_init();
     al_install_mouse();
@@ -80,12 +82,12 @@ int main(){
     img_Tablero = al_load_bitmap("imgs/Tablero.png");
     img_getIPBox = al_load_bitmap("imgs/getIPBox.png");
     img_getIPBoxCon = al_load_bitmap("imgs/getIPBoxCon.png");
-    img_UbuntuCard = al_load_bitmap("imgs/UbuntuCard.png");
-    img_DebianCard = al_load_bitmap("imgs/DebianCard.png");
-    img_FedoraCard = al_load_bitmap("imgs/FedoraCard.png");
-    img_ArchCard = al_load_bitmap("imgs/ArchCard.png");
-    img_SuseCard = al_load_bitmap("imgs/SuseCard.png");
-    img_DownCard = al_load_bitmap("imgs/DownCard.png");
+    img_Cards[DOWNCARD] = al_load_bitmap("imgs/DownCard.png");
+    img_Cards[UBUNTU] = al_load_bitmap("imgs/UbuntuCard.png");
+    img_Cards[DEBIAN] = al_load_bitmap("imgs/DebianCard.png");
+    img_Cards[FEDORA] = al_load_bitmap("imgs/FedoraCard.png");
+    img_Cards[ARCH] = al_load_bitmap("imgs/ArchCard.png");
+    img_Cards[SUSE] = al_load_bitmap("imgs/SuseCard.png");
     font = al_load_font("fonts/fuente_pincel.ttf", 68, 0);
     strcpy(str, "");
 
@@ -163,12 +165,35 @@ int main(){
                             al_flip_display();
                         }
 
-                        /*if(clickOnBox == true && !(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638)){//Muestra el contendo del IPBox cada que se mueva el mouse
+                    }
+
+                    if(event2.type == ALLEGRO_EVENT_KEY_CHAR && clickOnBox){///EVENTO KEY CHAR
+
+                        if(strlen(str) <= 16){
+                            char temp[] = {event2.keyboard.unichar, '\0'};
+                            if (event2.keyboard.unichar == ' ')
+                                strcat(str, temp);
+                            else if(event2.keyboard.unichar >= '0' && event2.keyboard.unichar <= '9')
+                                strcat(str, temp);
+                            else if(event2.keyboard.unichar >= 'A' && event2.keyboard.unichar <= 'Z')
+                                strcat(str, temp);
+                            else if(event2.keyboard.unichar >= 'a' && event2.keyboard.unichar <= 'z')
+                                strcat(str, temp);
+                            else if(event2.keyboard.unichar == '.')
+                                strcat(str, temp);
+                        }
+
+                        if(event2.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && strlen(str) != 0)
+                            str[strlen(str) - 1] = '\0';
+
+                        if(clickOnBox){
                             al_draw_bitmap(img_getIPBox, 0, 0, 0);
                             al_draw_text(font, al_map_rgb(0, 0, 0), 600, 360, ALLEGRO_ALIGN_CENTRE, str);
                             al_flip_display();
-                        }*/
-                    }
+                            cout<<str<<endl;
+                        }
+
+                    }///Fin evento KEY CHAR
 
                     if(event2.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){///MOUSE DOWN pantalla getIP
 
@@ -224,125 +249,85 @@ int main(){
                                     }
                                 }
 
-                                if(card1){ //&& redraw){
-                                    //redraw = false;
-                                    al_draw_bitmap(img_UbuntuCard, 163, 132, 0);
+                                if(card1){
+                                    al_draw_bitmap(img_Cards[UBUNTU], 163, 132, 0);
                                     al_flip_display();
-                                }else if(!card1){ //&& redraw){
-                                    //redraw = false;
-                                    al_draw_bitmap(img_DownCard, 163, 132, 0);
+                                }else{
+                                    al_draw_bitmap(img_Cards[DOWNCARD], 163, 132, 0);
                                     al_flip_display();
                                 }
 
-                                if(card2){ //&& redraw){
-                                    //redraw = false;
-                                    al_draw_bitmap(img_DebianCard, 342, 132, 0);
+                                if(card2){
+                                    al_draw_bitmap(img_Cards[DEBIAN], 342, 132, 0);
                                     al_flip_display();
-                                }else if(!card1){ //&& redraw){
-                                    //redraw = false;
-                                    al_draw_bitmap(img_DownCard, 342, 132, 0);
+                                }else{
+                                    al_draw_bitmap(img_Cards[DOWNCARD], 342, 132, 0);
                                     al_flip_display();
                                 }
 
-                                if(card3){ //&& redraw){
-                                    //redraw = false;
-                                    al_draw_bitmap(img_ArchCard, 515, 132, 0);
+                                if(card3){
+                                    al_draw_bitmap(img_Cards[FEDORA], 515, 132, 0);
                                     al_flip_display();
-                                }else if(!card3){ //&& redraw){
-                                    //redraw = false;
-                                    al_draw_bitmap(img_DownCard, 515, 132, 0);
+                                }else{
+                                    al_draw_bitmap(img_Cards[DOWNCARD], 515, 132, 0);
                                     al_flip_display();
                                 }
 
-                                if(card4){ //&& redraw){
-                                    //redraw = false;
-                                    al_draw_bitmap(img_SuseCard, 699, 132, 0);
+                                if(card4){
+                                    al_draw_bitmap(img_Cards[ARCH], 699, 132, 0);
                                     al_flip_display();
-                                }else if(!card4){ //&& redraw){
-                                    //redraw = false;
-                                    al_draw_bitmap(img_DownCard, 699, 132, 0);
+                                }else if(!card4){
+                                    al_draw_bitmap(img_Cards[DOWNCARD], 699, 132, 0);
                                     al_flip_display();
                                 }
 
-                                if(card5){ //&& redraw){
-                                    //redraw = false;
-                                    al_draw_bitmap(img_FedoraCard, 880, 132, 0);
+                                if(card5){
+                                    al_draw_bitmap(img_Cards[SUSE], 880, 132, 0);
                                     al_flip_display();
-                                }else if(!card5){ //&& redraw){
-                                    //redraw = false;
-                                    al_draw_bitmap(img_DownCard, 880, 132, 0);
+                                }else if(!card5){
+                                    al_draw_bitmap(img_Cards[DOWNCARD], 880, 132, 0);
                                     al_flip_display();
                                 }
-                                ///*********************///
-                                if(card6 && redraw){
+
+                                if(card6){
 
                                 }else{
-                                    al_draw_bitmap(img_DownCard, 162, 356, 0);
+                                    al_draw_bitmap(img_Cards[DOWNCARD], 162, 356, 0);
                                     al_flip_display();
                                 }
 
                                 if(card7){
 
                                 }else{
-                                    al_draw_bitmap(img_DownCard, 342, 356, 0);
+                                    al_draw_bitmap(img_Cards[DOWNCARD], 342, 356, 0);
                                     al_flip_display();
                                 }
 
                                 if(card8){
 
                                 }else{
-                                    al_draw_bitmap(img_DownCard, 515, 356, 0);
+                                    al_draw_bitmap(img_Cards[DOWNCARD], 515, 356, 0);
                                     al_flip_display();
                                 }
 
                                 if(card9){
 
                                 }else{
-                                    al_draw_bitmap(img_DownCard, 880, 356, 0);
+                                    al_draw_bitmap(img_Cards[DOWNCARD], 880, 356, 0);
                                     al_flip_display();
                                 }
 
                                 if(card10){
 
                                 }else{
-                                    al_draw_bitmap(img_DownCard, 699, 356, 0);
+                                    al_draw_bitmap(img_Cards[DOWNCARD], 699, 356, 0);
                                     al_flip_display();
                                 }
 
                             }
                         }
 
-                    }//Fin mouse down pantalla getIP
-
-                    //-----------------------------------------------
-
-                    if(event2.type == ALLEGRO_EVENT_KEY_CHAR && clickOnBox){///EVENTO KEY CHAR
-
-                        if(strlen(str) <= 16){
-                            char temp[] = {event2.keyboard.unichar, '\0'};
-                            if (event2.keyboard.unichar == ' ')
-                                strcat(str, temp);
-                            else if(event2.keyboard.unichar >= '0' && event2.keyboard.unichar <= '9')
-                                strcat(str, temp);
-                            else if(event2.keyboard.unichar >= 'A' && event2.keyboard.unichar <= 'Z')
-                                strcat(str, temp);
-                            else if(event2.keyboard.unichar >= 'a' && event2.keyboard.unichar <= 'z')
-                                strcat(str, temp);
-                            else if(event2.keyboard.unichar == '.')
-                                strcat(str, temp);
-                        }
-
-                        if(event2.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && strlen(str) != 0)
-                            str[strlen(str) - 1] = '\0';
-
-                        if(clickOnBox){
-                            al_draw_bitmap(img_getIPBox, 0, 0, 0);
-                            al_draw_text(font, al_map_rgb(0, 0, 0), 600, 360, ALLEGRO_ALIGN_CENTRE, str);
-                            al_flip_display();
-                        cout<<str<<endl;
-                        }
-
-                    }///Fin evento KEY CHAR
+                    }///Fin mouse down pantalla getIP
 
                 }
             }//Fin click comenzar
@@ -350,53 +335,9 @@ int main(){
                 salir = true;
         }
 
-        /*if(redraw){
-            redraw = false;
-            al_draw_bitmap(img_main, 0, 0, 0);
-            al_flip_display();
-        }*/
-
     }//End main looṕ
 
     destroyAll();
 
     return 0;
 }
-
-/*void manipular_entrada(ALLEGRO_EVENT evento)
-{
-
-        if (strlen(str) <= 16)
-        {
-            char temp[] = {evento.keyboard.unichar, '\0'};
-            if (evento.keyboard.unichar == ' ')
-            {
-                strcat(str, temp);
-            }
-            else if (evento.keyboard.unichar >= '0' &&
-                     evento.keyboard.unichar <= '9')
-            {
-                strcat(str, temp);
-            }
-            else if (evento.keyboard.unichar >= 'A' &&
-                     evento.keyboard.unichar <= 'Z')
-            {
-                strcat(str, temp);
-            }
-            else if (evento.keyboard.unichar >= 'a' &&
-                     evento.keyboard.unichar <= 'z')
-            {
-                strcat(str, temp);
-            }
-        }
-
-        if (evento.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && strlen(str) != 0)
-        {
-            str[strlen(str) - 1] = '\0';
-        }
-
-        al_draw_text(font, al_map_rgb(255, 255, 255), 50,
-                     50,
-                     0, str);
-}*/
-
