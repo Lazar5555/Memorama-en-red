@@ -37,7 +37,7 @@
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
 
-1476666486 source:/home/l-e/Escritorio/Memorama-en-red/main.cpp
+1477348495 source:/home/l-e/Escritorio/Memorama-en-red/main.cpp
 	<iostream>
 	<stdio.h>
 	<stdlib.h>
@@ -46,4 +46,11 @@
 	<allegro5/allegro_image.h>
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
+	<sys/socket.h>
+	<sys/types.h>
+	<netinet/in.h>
+	<arpa/inet.h>
+	<fcntl.h>
+	<unistd.h>
+	<netdb.h>
 

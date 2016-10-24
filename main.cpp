@@ -11,7 +11,12 @@
 
 /*Librerías para red*/
 #include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 #include <fcntl.h>
+#include <unistd.h>
+#include <netdb.h>
 
 #define WIDTH 1200
 #define HEIGTH 700
@@ -23,7 +28,7 @@
 #define ARCH 4
 #define SUSE 5
 
-#define PORTSERVER 25500
+#define PORTSERVER 25252
 
 using namespace std;
 
@@ -67,8 +72,9 @@ int main(){
     bool salir = false;
     bool clickOnBox = false;
     bool redraw = true;
+    bool cargado = false;
 
-    int s;
+    int s, res;
     char host[200];
 
     /*Iniciar los componentes de Allegro*/
@@ -111,6 +117,11 @@ int main(){
     struct sockaddr_in server;
     server.sin_family = AF_INET;
     server.sin_port = htons(PORTSERVER);
+
+    struct addrinfo hints, *lista, *save;
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
 
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_mouse_event_source());
@@ -225,6 +236,42 @@ int main(){
                         }
 
                         if(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638){///Click Conectar
+
+                            if(!cargado){
+                                cargado = true;
+                                char IP[50];
+
+                                res = getaddrinfo(host, "25252", &hints, &lista);
+                                if(res != 0){
+                                    printf ("Error en la resolución de nombres: %s\n", gai_strerror (res));
+                                    close (s);
+                                    return EXIT_FAILURE;
+                                }
+
+                                save = lista;
+                                struct sockaddr_in *cast;
+                                while(lista != NULL){
+                                    cast = (struct sockaddr_in *) lista->ai_addr;
+                                    inet_ntop(AF_INET, &cast->sin_addr, IP, sizeof (IP));
+                                    cout<<"Intentando conectar a "<<IP<<endl;
+                                    server.sin_addr = cast->sin_addr;
+
+                                    res = connect (s, (struct sockaddr *) &server, sizeof (struct sockaddr_in));
+                                    if (res == 0) {
+                                        cout<<"Conexion exitosa"<<endl;
+                                        break;
+                                    }
+
+                                    lista = lista->ai_next;
+                                }
+
+                                freeaddrinfo (save);
+                                if (lista == NULL) {
+                                    cout<<"No se pudo realizar la conexion."<<endl;
+                                    close (s);
+                                    return EXIT_FAILURE;
+                                }
+                            }
 
                             redraw = true;
                             bool gameOver = false;
