@@ -3,21 +3,27 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*Librerías allegro*/
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 
+/*Librerías para red*/
+#include <sys/socket.h>
+#include <fcntl.h>
+
 #define WIDTH 1200
 #define HEIGTH 700
 #define FPS 60
-
 #define DOWNCARD 0
 #define UBUNTU 1
 #define DEBIAN 2
 #define FEDORA 3
 #define ARCH 4
 #define SUSE 5
+
+#define PORTSERVER 25500
 
 using namespace std;
 
@@ -61,8 +67,11 @@ int main(){
     bool salir = false;
     bool clickOnBox = false;
     bool redraw = true;
-    char str[17];
 
+    int s;
+    char host[200];
+
+    /*Iniciar los componentes de Allegro*/
     al_init();
     al_install_mouse();
     al_install_keyboard();
@@ -89,7 +98,19 @@ int main(){
     img_Cards[ARCH] = al_load_bitmap("imgs/ArchCard.png");
     img_Cards[SUSE] = al_load_bitmap("imgs/SuseCard.png");
     font = al_load_font("fonts/fuente_pincel.ttf", 68, 0);
-    strcpy(str, "");
+    strcpy(host, "");
+
+    /*Iniciar los componentes de red*/
+    s = socket(AF_INET, SOCK_STREAM, 0);
+    if(s < 0){
+        perror("Error en socket()");
+        close(s);
+        return EXIT_FAILURE;
+    }
+
+    struct sockaddr_in server;
+    server.sin_family = AF_INET;
+    server.sin_port = htons(PORTSERVER);
 
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_mouse_event_source());
@@ -152,12 +173,12 @@ int main(){
                         if(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638 && redraw){
                             redraw = false;
                             al_draw_bitmap(img_getIPCon, 0, 0, 0);
-                            al_draw_text(font, al_map_rgb(0, 0, 0), 600, 360, ALLEGRO_ALIGN_CENTRE, str);
+                            al_draw_text(font, al_map_rgb(0, 0, 0), 600, 360, ALLEGRO_ALIGN_CENTRE, host);
                             al_flip_display();
                         }else if(clickOnBox == true && redraw){
                             redraw = false;
                             al_draw_bitmap(img_getIPBox, 0, 0, 0);
-                            al_draw_text(font, al_map_rgb(0, 0, 0), 600, 360, ALLEGRO_ALIGN_CENTRE, str);
+                            al_draw_text(font, al_map_rgb(0, 0, 0), 600, 360, ALLEGRO_ALIGN_CENTRE, host);
                             al_flip_display();
                         }else if(redraw){
                             redraw = false;
@@ -169,28 +190,28 @@ int main(){
 
                     if(event2.type == ALLEGRO_EVENT_KEY_CHAR && clickOnBox){///EVENTO KEY CHAR
 
-                        if(strlen(str) <= 16){
+                        if(strlen(host) <= 200){
                             char temp[] = {event2.keyboard.unichar, '\0'};
                             if (event2.keyboard.unichar == ' ')
-                                strcat(str, temp);
+                                strcat(host, temp);
                             else if(event2.keyboard.unichar >= '0' && event2.keyboard.unichar <= '9')
-                                strcat(str, temp);
+                                strcat(host, temp);
                             else if(event2.keyboard.unichar >= 'A' && event2.keyboard.unichar <= 'Z')
-                                strcat(str, temp);
+                                strcat(host, temp);
                             else if(event2.keyboard.unichar >= 'a' && event2.keyboard.unichar <= 'z')
-                                strcat(str, temp);
+                                strcat(host, temp);
                             else if(event2.keyboard.unichar == '.')
-                                strcat(str, temp);
+                                strcat(host, temp);
                         }
 
-                        if(event2.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && strlen(str) != 0)
-                            str[strlen(str) - 1] = '\0';
+                        if(event2.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && strlen(host) != 0)
+                            host[strlen(host) - 1] = '\0';
 
                         if(clickOnBox){
                             al_draw_bitmap(img_getIPBox, 0, 0, 0);
-                            al_draw_text(font, al_map_rgb(0, 0, 0), 600, 360, ALLEGRO_ALIGN_CENTRE, str);
+                            al_draw_text(font, al_map_rgb(0, 0, 0), 600, 360, ALLEGRO_ALIGN_CENTRE, host);
                             al_flip_display();
-                            cout<<str<<endl;
+                            cout<<host<<endl;
                         }
 
                     }///Fin evento KEY CHAR
