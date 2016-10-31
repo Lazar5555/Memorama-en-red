@@ -28,7 +28,7 @@
 #define ARCH 4
 #define SUSE 5
 
-#define PORTSERVER 25252
+#define PORTSERVER 25500
 
 using namespace std;
 
@@ -36,6 +36,7 @@ ALLEGRO_DISPLAY *display;
 ALLEGRO_EVENT_QUEUE *event_queue;
 ALLEGRO_BITMAP *img_main, *img_mainStart, *img_mainExit, *img_getIP, *img_getIPCon, *img_Tablero, *img_getIPBox, *img_getIPBoxCon;
 ALLEGRO_BITMAP *img_Cards[6];
+ALLEGRO_BITMAP *img_failConection;
 ALLEGRO_FONT *font;
 ALLEGRO_TIMER *timer;
 
@@ -59,6 +60,7 @@ void destroyAll(){
     al_destroy_bitmap(img_Cards[FEDORA]);
     al_destroy_bitmap(img_Cards[ARCH]);
     al_destroy_bitmap(img_Cards[SUSE]);
+    al_destroy_bitmap(img_failConection);
     //Fuente
     al_destroy_font(font);
 
@@ -97,6 +99,9 @@ int main(){
     img_Tablero = al_load_bitmap("imgs/Tablero.png");
     img_getIPBox = al_load_bitmap("imgs/getIPBox.png");
     img_getIPBoxCon = al_load_bitmap("imgs/getIPBoxCon.png");
+    /*Imagenes de error*/
+    img_failConection = al_load_bitmap("imgs/FailConection.png");
+    /*Imagenes del tablero*/
     img_Cards[DOWNCARD] = al_load_bitmap("imgs/DownCard.png");
     img_Cards[UBUNTU] = al_load_bitmap("imgs/UbuntuCard.png");
     img_Cards[DEBIAN] = al_load_bitmap("imgs/DebianCard.png");
@@ -114,6 +119,7 @@ int main(){
         return EXIT_FAILURE;
     }
 
+    /*Inicializamos la estructura sockaddr_in*/
     struct sockaddr_in server;
     server.sin_family = AF_INET;
     server.sin_port = htons(PORTSERVER);
@@ -239,25 +245,31 @@ int main(){
 
                             if(!cargado){
                                 cargado = true;
-                                char IP[50];
+                                bool failCon = false;
+                                char IP[50];//IP obtenida de la resolución de nombres
 
+                                /*resolución de nombres para conectar al servidor*/
                                 res = getaddrinfo(host, "25252", &hints, &lista);
                                 if(res != 0){
                                     printf ("Error en la resolución de nombres: %s\n", gai_strerror (res));
                                     close (s);
+                                    failCon = true;
+                                    al_draw_bitmap(img_failConection, 350, 175, 0);
+                                    al_flip_display();
+                                    al_rest(5.0);
                                     return EXIT_FAILURE;
                                 }
 
                                 save = lista;
                                 struct sockaddr_in *cast;
                                 while(lista != NULL){
-                                    cast = (struct sockaddr_in *) lista->ai_addr;
+                                    cast = (struct sockaddr_in *)lista->ai_addr;
                                     inet_ntop(AF_INET, &cast->sin_addr, IP, sizeof (IP));
                                     cout<<"Intentando conectar a "<<IP<<endl;
                                     server.sin_addr = cast->sin_addr;
 
-                                    res = connect (s, (struct sockaddr *) &server, sizeof (struct sockaddr_in));
-                                    if (res == 0) {
+                                    res = connect(s, (struct sockaddr *) &server, sizeof (struct sockaddr_in));
+                                    if(res == 0){
                                         cout<<"Conexion exitosa"<<endl;
                                         break;
                                     }
@@ -266,9 +278,13 @@ int main(){
                                 }
 
                                 freeaddrinfo (save);
-                                if (lista == NULL) {
+                                if (lista == NULL){
                                     cout<<"No se pudo realizar la conexion."<<endl;
                                     close (s);
+                                    failCon = true;
+                                    al_draw_bitmap(img_failConection, 350, 175, 0);
+                                    al_flip_display();
+                                    al_rest(5.0);
                                     return EXIT_FAILURE;
                                 }
                             }

@@ -23,12 +23,22 @@
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
 
-1475772761 source:/home/eleazar/Escritorio/Memorama-en-red/main.cpp
+1477943145 source:/home/eleazar/Escritorio/Memorama-en-red/main.cpp
 	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
+	<sys/socket.h>
+	<sys/types.h>
+	<netinet/in.h>
+	<arpa/inet.h>
+	<fcntl.h>
+	<unistd.h>
+	<netdb.h>
 
 1476142585 source:c:\users\ekt\desktop\memorama-en-red\main.cpp
 	<iostream>
