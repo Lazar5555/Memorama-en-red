@@ -287,6 +287,12 @@ int main(){
                                     al_rest(5.0);
                                     return EXIT_FAILURE;
                                 }
+
+                                /*Hacer el socket no bloqueante*/
+                                int flags;
+                                flags = fcntl (s, F_GETFL);
+                                flags = flags | O_NONBLOCK;
+                                res = fcntl (s, F_SETFL, flags);
                             }
 
                             redraw = true;
