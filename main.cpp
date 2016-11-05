@@ -17,10 +17,13 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <netdb.h>
+#include <errno.h>
 
 #define WIDTH 1200
 #define HEIGTH 700
 #define FPS 60
+#define EXIT_PAUSE 5.0
+
 #define DOWNCARD 0
 #define UBUNTU 1
 #define DEBIAN 2
@@ -37,7 +40,7 @@ ALLEGRO_EVENT_QUEUE *event_queue;
 ALLEGRO_BITMAP *img_main, *img_mainStart, *img_mainExit, *img_getIP, *img_getIPCon, *img_Tablero, *img_getIPBox, *img_getIPBoxCon;
 ALLEGRO_BITMAP *img_Cards[6];
 ALLEGRO_BITMAP *img_failConection;
-ALLEGRO_FONT *font;
+ALLEGRO_FONT *font, *fontGame;
 ALLEGRO_TIMER *timer;
 
 void destroyAll(){
@@ -63,6 +66,7 @@ void destroyAll(){
     al_destroy_bitmap(img_failConection);
     //Fuente
     al_destroy_font(font);
+    al_destroy_font(fontGame);
 
     //Timer
     al_destroy_timer(timer);
@@ -109,6 +113,7 @@ int main(){
     img_Cards[ARCH] = al_load_bitmap("imgs/ArchCard.png");
     img_Cards[SUSE] = al_load_bitmap("imgs/SuseCard.png");
     font = al_load_font("fonts/fuente_pincel.ttf", 68, 0);
+    fontGame = al_load_font("fonts/fuente_pincel.ttf", 100, 0);
     strcpy(host, "");
 
     /*Iniciar los componentes de red*/
@@ -242,10 +247,13 @@ int main(){
                         }
 
                         if(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638){///Click Conectar
+                            /*Buffer para recivir los datos del servidor*/
+                            char buffer[1200];
+                            bool tuTurno = false;
+                            int tablero[10];
 
                             if(!cargado){
                                 cargado = true;
-                                bool failCon = false;
                                 char IP[50];//IP obtenida de la resolución de nombres
 
                                 /*resolución de nombres para conectar al servidor*/
@@ -253,10 +261,9 @@ int main(){
                                 if(res != 0){
                                     printf ("Error en la resolución de nombres: %s\n", gai_strerror (res));
                                     close (s);
-                                    failCon = true;
                                     al_draw_bitmap(img_failConection, 350, 175, 0);
                                     al_flip_display();
-                                    al_rest(5.0);
+                                    al_rest(EXIT_PAUSE);
                                     return EXIT_FAILURE;
                                 }
 
@@ -280,11 +287,10 @@ int main(){
                                 freeaddrinfo (save);
                                 if (lista == NULL){
                                     cout<<"No se pudo realizar la conexion."<<endl;
-                                    close (s);
-                                    failCon = true;
+                                    close(s);
                                     al_draw_bitmap(img_failConection, 350, 175, 0);
                                     al_flip_display();
-                                    al_rest(5.0);
+                                    al_rest(EXIT_PAUSE);
                                     return EXIT_FAILURE;
                                 }
 
@@ -293,12 +299,53 @@ int main(){
                                 flags = fcntl (s, F_GETFL);
                                 flags = flags | O_NONBLOCK;
                                 res = fcntl (s, F_SETFL, flags);
+                                if(res < 0){
+                                    perror("Error en fcntl()");
+                                    close(s);
+                                    return EXIT_FAILURE;
+                                }
+
+                                /*Recibir tablero  y que número de jugador nos tocó*/
+                                bzero(buffer, sizeof(buffer));
+                                res = read(s, buffer, sizeof(buffer));
+                                if(res > 0){
+                                    buffer[res] = '\0';
+                                    for(int i = 0; i < 10; i++){
+                                        tablero[i] = (int)(buffer[i] - 48);
+                                    }
+                                    for(int i = 0; i < 10; i++){
+                                        cout<<tablero[i]<<endl;
+                                    }
+                                }
+                                else if(res == 0){
+                                    cout<<"El servidor cerro la conxion."<<endl;
+                                    close(s);
+                                    return EXIT_FAILURE;
+                                }
+                                else if(errno == EWOULDBLOCK || errno == EAGAIN){
+                                    continue;
+                                }
+
+                                cout<<buffer<<endl;
+
+                                if(buffer[10] == '1')
+                                    tuTurno = true;
                             }
+
+                            //al_flush_event_queue(event_queue);
+                            al_destroy_event_queue(event_queue);
+                            event_queue = al_create_event_queue();
+
 
                             redraw = true;
                             bool gameOver = false;
                             bool card1 = false, card2 = false, card3 = false, card4 = false, card5 = false;
                             bool card6 = false, card7 = false, card8 = false, card9 = false, card10 = false;
+
+                            al_register_event_source(event_queue, al_get_display_event_source(display));
+                            al_register_event_source(event_queue, al_get_mouse_event_source());
+                            al_register_event_source(event_queue, al_get_keyboard_event_source());
+                            al_register_event_source(event_queue, al_get_timer_event_source(timer));
 
                             al_draw_bitmap(img_Tablero, 0, 0, 0);
                             al_flip_display();
@@ -324,96 +371,133 @@ int main(){
 
                                     if(event.mouse.x > 163 && event.mouse.x < 312 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 1
                                         card1 = true;
+                                        //al_draw_bitmap(img_Cards[tablero[0]], 163, 132, 0);
+                                        //al_flip_display();
                                     }
                                     if(event.mouse.x > 342 && event.mouse.x < 491 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 2
                                         card2 = true;
+                                        //al_draw_bitmap(img_Cards[tablero[1]], 342, 132, 0);
+                                        //al_flip_display();
                                     }
                                     if(event.mouse.x > 515 && event.mouse.x < 664 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 3
                                         card3 = true;
+                                        //al_draw_bitmap(img_Cards[tablero[2]], 515, 132, 0);
+                                        //al_flip_display();
                                     }
                                     if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 4
                                         card4 = true;
+                                        //al_draw_bitmap(img_Cards[tablero[3]], 699, 132, 0);
+                                        //al_flip_display();
                                     }
-                                    if(event.mouse.x > 880 && event.mouse.x < 1029 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 4
+                                    if(event.mouse.x > 880 && event.mouse.x < 1029 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 5
                                         card5 = true;
+                                        //al_draw_bitmap(img_Cards[tablero[4]], 880, 132, 0);
+                                        //al_flip_display();
+                                    }
+                                    if(event.mouse.x > 162 && event.mouse.x < 311 && event.mouse.y > 356 && event.mouse.y < 564){///carta 6
+                                        card6 = true;
+                                    }
+                                    if(event.mouse.x > 342 && event.mouse.x < 487 && event.mouse.y > 356 && event.mouse.y < 564){///carta 7
+                                        card7 = true;
+                                    }
+                                    if(event.mouse.x > 516 && event.mouse.x < 665 && event.mouse.y > 356 && event.mouse.y < 564){///carta 8
+                                        card8 = true;
+                                    }
+                                    if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 356 && event.mouse.y < 564){///carta 9
+                                        card9 = true;
+                                    }
+                                    if(event.mouse.x > 880 && event.mouse.x < 1028 && event.mouse.y > 356 && event.mouse.y < 564){///carta 10
+                                        card10 = true;
                                     }
                                 }
 
-                                if(card1){
-                                    al_draw_bitmap(img_Cards[UBUNTU], 163, 132, 0);
-                                    al_flip_display();
-                                }else{
-                                    al_draw_bitmap(img_Cards[DOWNCARD], 163, 132, 0);
-                                    al_flip_display();
+                                if(redraw && al_is_event_queue_empty(event_queue)){
+                                    redraw = false;
+                                    /*Mostrar que es tu turno hacer el movimiento*/
+                                    if(tuTurno){
+                                        al_draw_text(fontGame, al_map_rgb(232, 11, 1), 585, 0, ALLEGRO_ALIGN_CENTRE, "¡Tu turno!");
+                                    }
+
+                                    if(card1){
+                                        al_draw_bitmap(img_Cards[tablero[0]], 163, 132, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 163, 132, 0);
+                                        al_flip_display();
+                                    }
+
+                                    if(card2){
+                                        al_draw_bitmap(img_Cards[tablero[1]], 342, 132, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 342, 132, 0);
+                                        al_flip_display();
+                                    }
+
+                                    if(card3){
+                                        al_draw_bitmap(img_Cards[tablero[2]], 515, 132, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 515, 132, 0);
+                                        al_flip_display();
+                                    }
+
+                                    if(card4){
+                                        al_draw_bitmap(img_Cards[tablero[3]], 699, 132, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 699, 132, 0);
+                                        al_flip_display();
+                                    }
+
+                                    if(card5){
+                                        al_draw_bitmap(img_Cards[tablero[4]], 880, 132, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 880, 132, 0);
+                                        al_flip_display();
+                                    }
+
+                                    if(card6){
+                                        al_draw_bitmap(img_Cards[tablero[5]], 162, 356, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 162, 356, 0);
+                                        al_flip_display();
+                                    }
+
+                                    if(card7){
+                                        al_draw_bitmap(img_Cards[tablero[6]], 342, 356, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 342, 356, 0);
+                                        al_flip_display();
+                                    }
+
+                                    if(card8){
+                                        al_draw_bitmap(img_Cards[tablero[7]], 515, 356, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 515, 356, 0);
+                                        al_flip_display();
+                                    }
+
+                                    if(card9){
+                                        al_draw_bitmap(img_Cards[tablero[8]], 699, 356, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 699, 356, 0);
+                                        al_flip_display();
+                                    }
+
+                                    if(card10){
+                                        al_draw_bitmap(img_Cards[tablero[9]], 880, 356, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 880, 356, 0);
+                                        al_flip_display();
+                                    }
                                 }
-
-                                if(card2){
-                                    al_draw_bitmap(img_Cards[DEBIAN], 342, 132, 0);
-                                    al_flip_display();
-                                }else{
-                                    al_draw_bitmap(img_Cards[DOWNCARD], 342, 132, 0);
-                                    al_flip_display();
-                                }
-
-                                if(card3){
-                                    al_draw_bitmap(img_Cards[FEDORA], 515, 132, 0);
-                                    al_flip_display();
-                                }else{
-                                    al_draw_bitmap(img_Cards[DOWNCARD], 515, 132, 0);
-                                    al_flip_display();
-                                }
-
-                                if(card4){
-                                    al_draw_bitmap(img_Cards[ARCH], 699, 132, 0);
-                                    al_flip_display();
-                                }else if(!card4){
-                                    al_draw_bitmap(img_Cards[DOWNCARD], 699, 132, 0);
-                                    al_flip_display();
-                                }
-
-                                if(card5){
-                                    al_draw_bitmap(img_Cards[SUSE], 880, 132, 0);
-                                    al_flip_display();
-                                }else if(!card5){
-                                    al_draw_bitmap(img_Cards[DOWNCARD], 880, 132, 0);
-                                    al_flip_display();
-                                }
-
-                                if(card6){
-
-                                }else{
-                                    al_draw_bitmap(img_Cards[DOWNCARD], 162, 356, 0);
-                                    al_flip_display();
-                                }
-
-                                if(card7){
-
-                                }else{
-                                    al_draw_bitmap(img_Cards[DOWNCARD], 342, 356, 0);
-                                    al_flip_display();
-                                }
-
-                                if(card8){
-
-                                }else{
-                                    al_draw_bitmap(img_Cards[DOWNCARD], 515, 356, 0);
-                                    al_flip_display();
-                                }
-
-                                if(card9){
-
-                                }else{
-                                    al_draw_bitmap(img_Cards[DOWNCARD], 880, 356, 0);
-                                    al_flip_display();
-                                }
-
-                                if(card10){
-
-                                }else{
-                                    al_draw_bitmap(img_Cards[DOWNCARD], 699, 356, 0);
-                                    al_flip_display();
-                                }
-
                             }
                         }
 
@@ -428,6 +512,7 @@ int main(){
     }//End main looṕ
 
     destroyAll();
+    close(s);
 
     return 0;
 }
