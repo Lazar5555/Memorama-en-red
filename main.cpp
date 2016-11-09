@@ -250,7 +250,8 @@ int main(){
                             /*Buffer para recivir los datos del servidor*/
                             char buffer[1200];
                             bool tuTurno = false;
-                            int tablero[10];
+                            int tablero[10], intentos = 0;
+
 
                             if(!cargado){
                                 cargado = true;
@@ -368,35 +369,45 @@ int main(){
 
                                 if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){///Clicks en el tablero
 
-                                    if(event.mouse.x > 163 && event.mouse.x < 312 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 1
+                                    if(event.mouse.x > 163 && event.mouse.x < 312 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 1
                                         card1 = true;
+                                        intentos++;
                                     }
-                                    if(event.mouse.x > 342 && event.mouse.x < 491 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 2
+                                    if(event.mouse.x > 342 && event.mouse.x < 491 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 2
                                         card2 = true;
+                                        intentos++;
                                     }
-                                    if(event.mouse.x > 515 && event.mouse.x < 664 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 3
+                                    if(event.mouse.x > 515 && event.mouse.x < 664 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 3
                                         card3 = true;
+                                        intentos++;
                                     }
-                                    if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 4
+                                    if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 4
                                         card4 = true;
+                                        intentos++;
                                     }
-                                    if(event.mouse.x > 880 && event.mouse.x < 1029 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 5
+                                    if(event.mouse.x > 880 && event.mouse.x < 1029 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 5
                                         card5 = true;
+                                        intentos++;
                                     }
-                                    if(event.mouse.x > 162 && event.mouse.x < 311 && event.mouse.y > 356 && event.mouse.y < 564){///carta 6
+                                    if(event.mouse.x > 162 && event.mouse.x < 311 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 6
                                         card6 = true;
+                                        intentos++;
                                     }
-                                    if(event.mouse.x > 342 && event.mouse.x < 487 && event.mouse.y > 356 && event.mouse.y < 564){///carta 7
+                                    if(event.mouse.x > 342 && event.mouse.x < 487 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 7
                                         card7 = true;
+                                        intentos++;
                                     }
-                                    if(event.mouse.x > 516 && event.mouse.x < 665 && event.mouse.y > 356 && event.mouse.y < 564){///carta 8
+                                    if(event.mouse.x > 516 && event.mouse.x < 665 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 8
                                         card8 = true;
+                                        intentos++;
                                     }
-                                    if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 356 && event.mouse.y < 564){///carta 9
+                                    if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 9
                                         card9 = true;
+                                        intentos++;
                                     }
-                                    if(event.mouse.x > 880 && event.mouse.x < 1028 && event.mouse.y > 356 && event.mouse.y < 564){///carta 10
+                                    if(event.mouse.x > 880 && event.mouse.x < 1028 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 10
                                         card10 = true;
+
                                     }
                                 }
 
@@ -405,86 +416,106 @@ int main(){
                                     /*Mostrar que es tu turno hacer el movimiento*/
                                     if(tuTurno){
                                         al_draw_text(fontGame, al_map_rgb(0, 0, 0), 585, 0, ALLEGRO_ALIGN_CENTRE, "¡Tu turno!");
-                                    }
 
-                                    if(card1){
-                                        al_draw_bitmap(img_Cards[tablero[0]], 163, 132, 0);
-                                        al_flip_display();
-                                    }else{
-                                        al_draw_bitmap(img_Cards[DOWNCARD], 163, 132, 0);
-                                        al_flip_display();
-                                    }
+                                        if(card1){
+                                            al_draw_bitmap(img_Cards[tablero[0]], 163, 132, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 163, 132, 0);
+                                            al_flip_display();
+                                        }
 
-                                    if(card2){
-                                        al_draw_bitmap(img_Cards[tablero[1]], 342, 132, 0);
-                                        al_flip_display();
-                                    }else{
-                                        al_draw_bitmap(img_Cards[DOWNCARD], 342, 132, 0);
-                                        al_flip_display();
-                                    }
+                                        if(card2){
+                                            al_draw_bitmap(img_Cards[tablero[1]], 342, 132, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 342, 132, 0);
+                                            al_flip_display();
+                                        }
 
-                                    if(card3){
-                                        al_draw_bitmap(img_Cards[tablero[2]], 515, 132, 0);
-                                        al_flip_display();
-                                    }else{
-                                        al_draw_bitmap(img_Cards[DOWNCARD], 515, 132, 0);
-                                        al_flip_display();
-                                    }
+                                        if(card3){
+                                            al_draw_bitmap(img_Cards[tablero[2]], 515, 132, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 515, 132, 0);
+                                            al_flip_display();
+                                        }
 
-                                    if(card4){
-                                        al_draw_bitmap(img_Cards[tablero[3]], 699, 132, 0);
-                                        al_flip_display();
-                                    }else{
-                                        al_draw_bitmap(img_Cards[DOWNCARD], 699, 132, 0);
-                                        al_flip_display();
-                                    }
+                                        if(card4){
+                                            al_draw_bitmap(img_Cards[tablero[3]], 699, 132, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 699, 132, 0);
+                                            al_flip_display();
+                                        }
 
-                                    if(card5){
-                                        al_draw_bitmap(img_Cards[tablero[4]], 880, 132, 0);
-                                        al_flip_display();
-                                    }else{
-                                        al_draw_bitmap(img_Cards[DOWNCARD], 880, 132, 0);
-                                        al_flip_display();
-                                    }
+                                        if(card5){
+                                            al_draw_bitmap(img_Cards[tablero[4]], 880, 132, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 880, 132, 0);
+                                            al_flip_display();
+                                        }
 
-                                    if(card6){
-                                        al_draw_bitmap(img_Cards[tablero[5]], 162, 356, 0);
-                                        al_flip_display();
-                                    }else{
-                                        al_draw_bitmap(img_Cards[DOWNCARD], 162, 356, 0);
-                                        al_flip_display();
-                                    }
+                                        if(card6){
+                                            al_draw_bitmap(img_Cards[tablero[5]], 162, 356, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 162, 356, 0);
+                                            al_flip_display();
+                                        }
 
-                                    if(card7){
-                                        al_draw_bitmap(img_Cards[tablero[6]], 342, 356, 0);
-                                        al_flip_display();
-                                    }else{
-                                        al_draw_bitmap(img_Cards[DOWNCARD], 342, 356, 0);
-                                        al_flip_display();
-                                    }
+                                        if(card7){
+                                            al_draw_bitmap(img_Cards[tablero[6]], 342, 356, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 342, 356, 0);
+                                            al_flip_display();
+                                        }
 
-                                    if(card8){
-                                        al_draw_bitmap(img_Cards[tablero[7]], 515, 356, 0);
-                                        al_flip_display();
-                                    }else{
-                                        al_draw_bitmap(img_Cards[DOWNCARD], 515, 356, 0);
-                                        al_flip_display();
-                                    }
+                                        if(card8){
+                                            al_draw_bitmap(img_Cards[tablero[7]], 515, 356, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 515, 356, 0);
+                                            al_flip_display();
+                                        }
 
-                                    if(card9){
-                                        al_draw_bitmap(img_Cards[tablero[8]], 699, 356, 0);
-                                        al_flip_display();
-                                    }else{
-                                        al_draw_bitmap(img_Cards[DOWNCARD], 699, 356, 0);
-                                        al_flip_display();
-                                    }
+                                        if(card9){
+                                            al_draw_bitmap(img_Cards[tablero[8]], 699, 356, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 699, 356, 0);
+                                            al_flip_display();
+                                        }
 
-                                    if(card10){
-                                        al_draw_bitmap(img_Cards[tablero[9]], 880, 356, 0);
-                                        al_flip_display();
-                                    }else{
-                                        al_draw_bitmap(img_Cards[DOWNCARD], 880, 356, 0);
-                                        al_flip_display();
+                                        if(card10){
+                                            al_draw_bitmap(img_Cards[tablero[9]], 880, 356, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 880, 356, 0);
+                                            al_flip_display();
+                                        }
+
+                                        //Mandar nuestro turno
+                                        if(intentos == 2){
+                                            //res = write(s, );
+                                        }
+                                    }
+                                    else{
+                                        //leer las cartas del otro jugador
+                                        res = read(s, buffer, sizeof(buffer));
+                                        if(res > 0){
+                                            buffer[res] = '\0';
+                                        }
+                                        else if(res == 0){
+                                            cout<<"El servidor cerro la conxion."<<endl;
+                                            close(s);
+                                            return EXIT_FAILURE;
+                                        }
+                                        else if(errno == EWOULDBLOCK || errno == EAGAIN){
+                                            continue;
+                                        }
                                     }
                                 }
                             }

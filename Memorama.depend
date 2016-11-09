@@ -23,7 +23,7 @@
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
 
-1477943145 source:/home/eleazar/Escritorio/Memorama-en-red/main.cpp
+1478721164 source:/home/eleazar/Escritorio/Memorama-en-red/main.cpp
 	<iostream>
 	<stdio.h>
 	<stdlib.h>
@@ -39,6 +39,7 @@
 	<fcntl.h>
 	<unistd.h>
 	<netdb.h>
+	<errno.h>
 
 1476142585 source:c:\users\ekt\desktop\memorama-en-red\main.cpp
 	<iostream>
