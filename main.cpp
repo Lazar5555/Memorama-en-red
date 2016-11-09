@@ -332,7 +332,6 @@ int main(){
                                     tuTurno = true;
                             }
 
-                            //al_flush_event_queue(event_queue);
                             al_destroy_event_queue(event_queue);
                             event_queue = al_create_event_queue();
 
@@ -371,28 +370,18 @@ int main(){
 
                                     if(event.mouse.x > 163 && event.mouse.x < 312 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 1
                                         card1 = true;
-                                        //al_draw_bitmap(img_Cards[tablero[0]], 163, 132, 0);
-                                        //al_flip_display();
                                     }
                                     if(event.mouse.x > 342 && event.mouse.x < 491 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 2
                                         card2 = true;
-                                        //al_draw_bitmap(img_Cards[tablero[1]], 342, 132, 0);
-                                        //al_flip_display();
                                     }
                                     if(event.mouse.x > 515 && event.mouse.x < 664 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 3
                                         card3 = true;
-                                        //al_draw_bitmap(img_Cards[tablero[2]], 515, 132, 0);
-                                        //al_flip_display();
                                     }
                                     if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 4
                                         card4 = true;
-                                        //al_draw_bitmap(img_Cards[tablero[3]], 699, 132, 0);
-                                        //al_flip_display();
                                     }
                                     if(event.mouse.x > 880 && event.mouse.x < 1029 && event.mouse.y > 132 && event.mouse.y < 340){///Carta 5
                                         card5 = true;
-                                        //al_draw_bitmap(img_Cards[tablero[4]], 880, 132, 0);
-                                        //al_flip_display();
                                     }
                                     if(event.mouse.x > 162 && event.mouse.x < 311 && event.mouse.y > 356 && event.mouse.y < 564){///carta 6
                                         card6 = true;
@@ -415,7 +404,7 @@ int main(){
                                     redraw = false;
                                     /*Mostrar que es tu turno hacer el movimiento*/
                                     if(tuTurno){
-                                        al_draw_text(fontGame, al_map_rgb(232, 11, 1), 585, 0, ALLEGRO_ALIGN_CENTRE, "¡Tu turno!");
+                                        al_draw_text(fontGame, al_map_rgb(0, 0, 0), 585, 0, ALLEGRO_ALIGN_CENTRE, "¡Tu turno!");
                                     }
 
                                     if(card1){

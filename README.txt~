@@ -11,12 +11,3 @@ Para compilar en Linux eliminar el archivo main.o en la carpeta Debug y volver a
 Quitar de Linker Settings: liballegro-5.0.10-monolith-mt.a *si lo tiene
 y agregara las librerias .so de allegro a linker settings.
 
-
-//////////////////////////////////PARA COMPILAR DESDE TERMINAL EN LINUX///////////////////////////////////
-
-g++ [nombre del archivo].cpp `pkg-config --cflags --libs [libreria de allegro]-5.0 [libreria de allegro 2]-5.0...`
-
-Para este programa sería:
-
-g++ main.cpp `pkg-config --cflags --libs allegro-5.0 allegro_image-5.0 allegro_font-5.0 allegro_ttf-5.0`
-
