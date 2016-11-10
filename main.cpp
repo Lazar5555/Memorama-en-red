@@ -1,7 +1,7 @@
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 /*Librerías allegro*/
 #include <allegro5/allegro.h>
@@ -248,7 +248,7 @@ int main(){
 
                         if(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638){///Click Conectar
                             /*Buffer para recivir los datos del servidor*/
-                            char buffer[1200];
+                            char buffer[1200], jugador;
                             bool tuTurno = false;
                             int tablero[10], intentos = 0;
 
@@ -329,8 +329,12 @@ int main(){
 
                                 cout<<buffer<<endl;
 
-                                if(buffer[10] == '1')
+                                if(buffer[10] == '1'){
                                     tuTurno = true;
+                                    jugador = buffer[10];
+                                }
+                                else
+                                    jugador = '2';
                             }
 
                             al_destroy_event_queue(event_queue);
@@ -339,8 +343,12 @@ int main(){
 
                             redraw = true;
                             bool gameOver = false;
-                            bool card1 = false, card2 = false, card3 = false, card4 = false, card5 = false;
-                            bool card6 = false, card7 = false, card8 = false, card9 = false, card10 = false;
+                            int card1 = 99, card2 = 99, card3 = 99, card4 = 99, card5 = 99;
+                            int card6 = 99, card7 = 99, card8 = 99, card9 = 99, card10 = 99;
+                            int firstCard, secondCard;
+                            //bool card1 = false, card2 = false, card3 = false, card4 = false, card5 = false;
+                            //bool card6 = false, card7 = false, card8 = false, card9 = false, card10 = false;
+                            char respuesta[50];
 
                             al_register_event_source(event_queue, al_get_display_event_source(display));
                             al_register_event_source(event_queue, al_get_mouse_event_source());
@@ -370,54 +378,108 @@ int main(){
                                 if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){///Clicks en el tablero
 
                                     if(event.mouse.x > 163 && event.mouse.x < 312 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 1
-                                        card1 = true;
+                                        card1 = 0;
+                                        if(intentos == 0)
+                                            firstCard = card1;
+                                        else if(intentos == 1)
+                                            secondCard = card1;
+
                                         intentos++;
                                     }
                                     if(event.mouse.x > 342 && event.mouse.x < 491 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 2
-                                        card2 = true;
+                                        card2 = 1;
+                                        if(intentos == 0)
+                                            firstCard = card2;
+                                        else if(intentos == 1)
+                                            secondCard = card2;
+
                                         intentos++;
                                     }
                                     if(event.mouse.x > 515 && event.mouse.x < 664 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 3
-                                        card3 = true;
+                                        card3 = 2;
+                                        if(intentos == 0)
+                                            firstCard = card3;
+                                        else if(intentos == 1)
+                                            secondCard = card3;
+
                                         intentos++;
                                     }
                                     if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 4
-                                        card4 = true;
+                                        card4 = 3;
+                                        if(intentos == 0)
+                                            firstCard = card4;
+                                        else if(intentos == 1)
+                                            secondCard = card4;
+
                                         intentos++;
                                     }
                                     if(event.mouse.x > 880 && event.mouse.x < 1029 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 5
-                                        card5 = true;
+                                        card5 = 4;
+                                        if(intentos == 0)
+                                            firstCard = card5;
+                                        else if(intentos == 1)
+                                            secondCard = card5;
+
                                         intentos++;
                                     }
                                     if(event.mouse.x > 162 && event.mouse.x < 311 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 6
-                                        card6 = true;
+                                        card6 = 5;
+                                        if(intentos == 0)
+                                            firstCard = card6;
+                                        else if(intentos == 1)
+                                            secondCard = card6;
+
                                         intentos++;
                                     }
                                     if(event.mouse.x > 342 && event.mouse.x < 487 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 7
-                                        card7 = true;
+                                        card7 = 6;
+                                        if(intentos == 0)
+                                            firstCard = card7;
+                                        else if(intentos == 1)
+                                            secondCard = card7;
+
                                         intentos++;
                                     }
                                     if(event.mouse.x > 516 && event.mouse.x < 665 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 8
-                                        card8 = true;
+                                        card8 = 7;
+                                        if(intentos == 0)
+                                            firstCard = card8;
+                                        else if(intentos == 1)
+                                            secondCard = card8;
+
                                         intentos++;
                                     }
                                     if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 9
-                                        card9 = true;
+                                        card9 = 8;
+                                        if(intentos == 0)
+                                            firstCard = card9;
+                                        else if(intentos == 1)
+                                            secondCard = card9;
+
                                         intentos++;
                                     }
                                     if(event.mouse.x > 880 && event.mouse.x < 1028 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 10
-                                        card10 = true;
+                                        card10 = 9;
+                                        if(intentos == 0)
+                                            firstCard = card10;
+                                        else if(intentos == 1)
+                                            secondCard = card10;
 
+                                        intentos++;
                                     }
                                 }
 
                                 if(redraw && al_is_event_queue_empty(event_queue)){
                                     redraw = false;
+                                    //char msg[50];
                                     /*Mostrar que es tu turno hacer el movimiento*/
+                                    //sprintf(msg, "Jugador %s: ", jugador);
+
+                                    //al_draw_text(fontGame, al_map_rgb(0, 0, 0), 300, 0, ALLEGRO_ALIGN_CENTRE, msg);
                                     if(tuTurno){
                                         al_draw_text(fontGame, al_map_rgb(0, 0, 0), 585, 0, ALLEGRO_ALIGN_CENTRE, "¡Tu turno!");
 
-                                        if(card1){
+                                        if(card1 == 0){
                                             al_draw_bitmap(img_Cards[tablero[0]], 163, 132, 0);
                                             al_flip_display();
                                         }else{
@@ -425,7 +487,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card2){
+                                        if(card2 == 1){
                                             al_draw_bitmap(img_Cards[tablero[1]], 342, 132, 0);
                                             al_flip_display();
                                         }else{
@@ -433,7 +495,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card3){
+                                        if(card3 == 2){
                                             al_draw_bitmap(img_Cards[tablero[2]], 515, 132, 0);
                                             al_flip_display();
                                         }else{
@@ -441,7 +503,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card4){
+                                        if(card4 == 3){
                                             al_draw_bitmap(img_Cards[tablero[3]], 699, 132, 0);
                                             al_flip_display();
                                         }else{
@@ -449,7 +511,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card5){
+                                        if(card5 == 4){
                                             al_draw_bitmap(img_Cards[tablero[4]], 880, 132, 0);
                                             al_flip_display();
                                         }else{
@@ -457,7 +519,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card6){
+                                        if(card6 == 5){
                                             al_draw_bitmap(img_Cards[tablero[5]], 162, 356, 0);
                                             al_flip_display();
                                         }else{
@@ -465,7 +527,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card7){
+                                        if(card7 == 6){
                                             al_draw_bitmap(img_Cards[tablero[6]], 342, 356, 0);
                                             al_flip_display();
                                         }else{
@@ -473,7 +535,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card8){
+                                        if(card8 == 7){
                                             al_draw_bitmap(img_Cards[tablero[7]], 515, 356, 0);
                                             al_flip_display();
                                         }else{
@@ -481,7 +543,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card9){
+                                        if(card9 == 8){
                                             al_draw_bitmap(img_Cards[tablero[8]], 699, 356, 0);
                                             al_flip_display();
                                         }else{
@@ -489,7 +551,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card10){
+                                        if(card10 == 9){
                                             al_draw_bitmap(img_Cards[tablero[9]], 880, 356, 0);
                                             al_flip_display();
                                         }else{
@@ -499,6 +561,16 @@ int main(){
 
                                         //Mandar nuestro turno
                                         if(intentos == 2){
+                                            bzero(respuesta, 50);
+                                            sprintf(respuesta, "%i%i%i%i", 1, 1,firstCard, secondCard);
+                                            cout<<"PAQUETE ENVIAR"<<endl;
+                                            cout<<"Tipo: "<<1<<endl;
+                                            cout<<"Jugador: "<<1<<endl;
+                                            cout<<"Primer carta: "<<firstCard<<endl;
+                                            cout<<"Segunda carta: "<<secondCard<<endl;
+
+                                            intentos = 0;
+                                            tuTurno = false;
                                             //res = write(s, );
                                         }
                                     }

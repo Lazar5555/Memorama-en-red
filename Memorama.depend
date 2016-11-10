@@ -23,11 +23,11 @@
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
 
-1478721164 source:/home/eleazar/Escritorio/Memorama-en-red/main.cpp
+1478806911 source:/home/eleazar/Escritorio/Memorama-en-red/main.cpp
 	<iostream>
-	<stdio.h>
-	<stdlib.h>
-	<string.h>
+	<cstdio>
+	<cstdlib>
+	<cstring>
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 	<allegro5/allegro_font.h>
