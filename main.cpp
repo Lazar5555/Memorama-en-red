@@ -343,8 +343,11 @@ int main(){
 
                             redraw = true;
                             bool gameOver = false;
-                            int card1 = 99, card2 = 99, card3 = 99, card4 = 99, card5 = 99;
-                            int card6 = 99, card7 = 99, card8 = 99, card9 = 99, card10 = 99;
+                            int cards[10];
+                            for(int i = 0; i < 10; i++)
+                              cards[i] = 99;
+                            //int card1 = 99, card2 = 99, card3 = 99, card4 = 99, card5 = 99;
+                            //int card6 = 99, card7 = 99, card8 = 99, card9 = 99, card10 = 99;
                             int firstCard, secondCard;
                             //bool card1 = false, card2 = false, card3 = false, card4 = false, card5 = false;
                             //bool card6 = false, card7 = false, card8 = false, card9 = false, card10 = false;
@@ -378,92 +381,92 @@ int main(){
                                 if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){///Clicks en el tablero
 
                                     if(event.mouse.x > 163 && event.mouse.x < 312 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 1
-                                        card1 = 0;
+                                        cards[0] = 0;
                                         if(intentos == 0)
-                                            firstCard = card1;
+                                            firstCard = cards[0];
                                         else if(intentos == 1)
-                                            secondCard = card1;
+                                            secondCard = cards[0];
 
                                         intentos++;
                                     }
                                     if(event.mouse.x > 342 && event.mouse.x < 491 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 2
-                                        card2 = 1;
+                                        cards[1] = 1;
                                         if(intentos == 0)
-                                            firstCard = card2;
+                                            firstCard = cards[1];
                                         else if(intentos == 1)
-                                            secondCard = card2;
+                                            secondCard = cards[1];
 
                                         intentos++;
                                     }
                                     if(event.mouse.x > 515 && event.mouse.x < 664 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 3
-                                        card3 = 2;
+                                        cards[2] = 2;
                                         if(intentos == 0)
-                                            firstCard = card3;
+                                            firstCard = cards[2];
                                         else if(intentos == 1)
-                                            secondCard = card3;
+                                            secondCard = cards[2];
 
                                         intentos++;
                                     }
                                     if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 4
-                                        card4 = 3;
+                                        cards[3] = 3;
                                         if(intentos == 0)
-                                            firstCard = card4;
+                                            firstCard = cards[3];
                                         else if(intentos == 1)
-                                            secondCard = card4;
+                                            secondCard = cards[3];
 
                                         intentos++;
                                     }
                                     if(event.mouse.x > 880 && event.mouse.x < 1029 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 5
-                                        card5 = 4;
+                                        cards[4] = 4;
                                         if(intentos == 0)
-                                            firstCard = card5;
+                                            firstCard = cards[4];
                                         else if(intentos == 1)
-                                            secondCard = card5;
+                                            secondCard = cards[4];
 
                                         intentos++;
                                     }
                                     if(event.mouse.x > 162 && event.mouse.x < 311 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 6
-                                        card6 = 5;
+                                        cards[5] = 5;
                                         if(intentos == 0)
-                                            firstCard = card6;
+                                            firstCard = cards[5];
                                         else if(intentos == 1)
-                                            secondCard = card6;
+                                            secondCard = cards[5];
 
                                         intentos++;
                                     }
                                     if(event.mouse.x > 342 && event.mouse.x < 487 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 7
-                                        card7 = 6;
+                                        cards[6] = 6;
                                         if(intentos == 0)
-                                            firstCard = card7;
+                                            firstCard = cards[6];
                                         else if(intentos == 1)
-                                            secondCard = card7;
+                                            secondCard = cards[6];
 
                                         intentos++;
                                     }
                                     if(event.mouse.x > 516 && event.mouse.x < 665 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 8
-                                        card8 = 7;
+                                        cards[7] = 7;
                                         if(intentos == 0)
-                                            firstCard = card8;
+                                            firstCard = cards[7];
                                         else if(intentos == 1)
-                                            secondCard = card8;
+                                            secondCard = cards[7];
 
                                         intentos++;
                                     }
                                     if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 9
-                                        card9 = 8;
+                                        cards[8] = 8;
                                         if(intentos == 0)
-                                            firstCard = card9;
+                                            firstCard = cards[8];
                                         else if(intentos == 1)
-                                            secondCard = card9;
+                                            secondCard = cards[8];
 
                                         intentos++;
                                     }
                                     if(event.mouse.x > 880 && event.mouse.x < 1028 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 10
-                                        card10 = 9;
+                                        cards[9] = 9;
                                         if(intentos == 0)
-                                            firstCard = card10;
+                                            firstCard = cards[9];
                                         else if(intentos == 1)
-                                            secondCard = card10;
+                                            secondCard = cards[9];
 
                                         intentos++;
                                     }
@@ -479,7 +482,7 @@ int main(){
                                     if(tuTurno){
                                         al_draw_text(fontGame, al_map_rgb(0, 0, 0), 585, 0, ALLEGRO_ALIGN_CENTRE, "¡Tu turno!");
 
-                                        if(card1 == 0){
+                                        if(cards[0] == 0){
                                             al_draw_bitmap(img_Cards[tablero[0]], 163, 132, 0);
                                             al_flip_display();
                                         }else{
@@ -487,7 +490,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card2 == 1){
+                                        if(cards[1] == 1){
                                             al_draw_bitmap(img_Cards[tablero[1]], 342, 132, 0);
                                             al_flip_display();
                                         }else{
@@ -495,7 +498,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card3 == 2){
+                                        if(cards[2] == 2){
                                             al_draw_bitmap(img_Cards[tablero[2]], 515, 132, 0);
                                             al_flip_display();
                                         }else{
@@ -503,7 +506,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card4 == 3){
+                                        if(cards[3] == 3){
                                             al_draw_bitmap(img_Cards[tablero[3]], 699, 132, 0);
                                             al_flip_display();
                                         }else{
@@ -511,7 +514,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card5 == 4){
+                                        if(cards[4] == 4){
                                             al_draw_bitmap(img_Cards[tablero[4]], 880, 132, 0);
                                             al_flip_display();
                                         }else{
@@ -519,7 +522,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card6 == 5){
+                                        if(cards[5] == 5){
                                             al_draw_bitmap(img_Cards[tablero[5]], 162, 356, 0);
                                             al_flip_display();
                                         }else{
@@ -527,7 +530,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card7 == 6){
+                                        if(cards[6] == 6){
                                             al_draw_bitmap(img_Cards[tablero[6]], 342, 356, 0);
                                             al_flip_display();
                                         }else{
@@ -535,7 +538,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card8 == 7){
+                                        if(cards[7] == 7){
                                             al_draw_bitmap(img_Cards[tablero[7]], 515, 356, 0);
                                             al_flip_display();
                                         }else{
@@ -543,7 +546,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card9 == 8){
+                                        if(cards[8] == 8){
                                             al_draw_bitmap(img_Cards[tablero[8]], 699, 356, 0);
                                             al_flip_display();
                                         }else{
@@ -551,7 +554,7 @@ int main(){
                                             al_flip_display();
                                         }
 
-                                        if(card10 == 9){
+                                        if(cards[9] == 9){
                                             al_draw_bitmap(img_Cards[tablero[9]], 880, 356, 0);
                                             al_flip_display();
                                         }else{
@@ -561,6 +564,23 @@ int main(){
 
                                         //Mandar nuestro turno
                                         if(intentos == 2){
+                                            //al_draw_bitmap(img_Tablero, 0, 0, 0);
+                                            //al_flip_display();
+                                            if(tablero[firstCard] == tablero[secondCard]){
+                                                cout<<"Atinaste"<<endl;
+                                                sprintf(respuesta, "%i%i%i", 3, firstCard, secondCard);                            
+                                                res = send(s, respuesta, sizeof(respuesta), 0);
+                                                if(res < 0){
+                                                    perror("Error en send");
+                                                    close(s);
+                                                    return EXIT_FAILURE;
+                                                }
+                                            }
+                                            else{
+                                                cout<<"No atinaste"<<endl;
+                                                cards[firstCard] = 99;
+                                                cards[secondCard] = 99;
+                                            }
                                             bzero(respuesta, 50);
                                             sprintf(respuesta, "%i%i%i%i", 1, 1,firstCard, secondCard);
                                             cout<<"PAQUETE ENVIAR"<<endl;
@@ -571,14 +591,176 @@ int main(){
 
                                             intentos = 0;
                                             tuTurno = false;
+
+                                            al_draw_bitmap(img_Tablero, 0, 0, 0);
+                                            al_flip_display();
                                             //res = write(s, );
                                         }
                                     }
                                     else{
+                                        al_draw_text(fontGame, al_map_rgb(0, 0, 0), 585, 0, ALLEGRO_ALIGN_CENTRE, "Esperando...");
+
+                                        /*Volver a dibujar las cartas en el tablero*/
+                                        if(cards[0] == 0){
+                                            al_draw_bitmap(img_Cards[tablero[0]], 163, 132, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 163, 132, 0);
+                                            al_flip_display();
+                                        }
+
+                                        if(cards[1] == 1){
+                                            al_draw_bitmap(img_Cards[tablero[1]], 342, 132, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 342, 132, 0);
+                                            al_flip_display();
+                                        }
+
+                                        if(cards[2] == 2){
+                                            al_draw_bitmap(img_Cards[tablero[2]], 515, 132, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 515, 132, 0);
+                                            al_flip_display();
+                                        }
+
+                                        if(cards[3] == 3){
+                                            al_draw_bitmap(img_Cards[tablero[3]], 699, 132, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 699, 132, 0);
+                                            al_flip_display();
+                                        }
+
+                                        if(cards[4] == 4){
+                                            al_draw_bitmap(img_Cards[tablero[4]], 880, 132, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 880, 132, 0);
+                                            al_flip_display();
+                                        }
+
+                                        if(cards[5] == 5){
+                                            al_draw_bitmap(img_Cards[tablero[5]], 162, 356, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 162, 356, 0);
+                                            al_flip_display();
+                                        }
+
+                                        if(cards[6] == 6){
+                                            al_draw_bitmap(img_Cards[tablero[6]], 342, 356, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 342, 356, 0);
+                                            al_flip_display();
+                                        }
+
+                                        if(cards[7] == 7){
+                                            al_draw_bitmap(img_Cards[tablero[7]], 515, 356, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 515, 356, 0);
+                                            al_flip_display();
+                                        }
+
+                                        if(cards[8] == 8){
+                                            al_draw_bitmap(img_Cards[tablero[8]], 699, 356, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 699, 356, 0);
+                                            al_flip_display();
+                                        }
+
+                                        if(cards[9] == 9){
+                                            al_draw_bitmap(img_Cards[tablero[9]], 880, 356, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 880, 356, 0);
+                                            al_flip_display();
+                                        }
+
                                         //leer las cartas del otro jugador
                                         res = read(s, buffer, sizeof(buffer));
                                         if(res > 0){
                                             buffer[res] = '\0';
+                                            if(buffer[0] == '3'){
+                                                int c1, c2;
+                                                c1 = (int)(buffer[1] - 48);
+                                                c1 = (int)(buffer[2] - 48);
+                                                if(c1 == 1){
+                                                    al_draw_bitmap(img_Cards[tablero[1]], 342, 132, 0);
+                                                    al_flip_display();
+                                                }else{
+                                                    al_draw_bitmap(img_Cards[DOWNCARD], 342, 132, 0);
+                                                    al_flip_display();
+                                                }
+
+                                                if(c1 == 2){
+                                                    al_draw_bitmap(img_Cards[tablero[2]], 515, 132, 0);
+                                                    al_flip_display();
+                                                }else{
+                                                    al_draw_bitmap(img_Cards[DOWNCARD], 515, 132, 0);
+                                                    al_flip_display();
+                                                }
+
+                                                if(c1 == 3){
+                                                    al_draw_bitmap(img_Cards[tablero[3]], 699, 132, 0);
+                                                    al_flip_display();
+                                                }else{
+                                                    al_draw_bitmap(img_Cards[DOWNCARD], 699, 132, 0);
+                                                    al_flip_display();
+                                                }
+
+                                                if(c1 == 4){
+                                                    al_draw_bitmap(img_Cards[tablero[4]], 880, 132, 0);
+                                                    al_flip_display();
+                                                }else{
+                                                    al_draw_bitmap(img_Cards[DOWNCARD], 880, 132, 0);
+                                                    al_flip_display();
+                                                }
+
+                                                if(c1 == 5){
+                                                    al_draw_bitmap(img_Cards[tablero[5]], 162, 356, 0);
+                                                    al_flip_display();
+                                                }else{
+                                                    al_draw_bitmap(img_Cards[DOWNCARD], 162, 356, 0);
+                                                    al_flip_display();
+                                                }
+
+                                                if(c1 == 6){
+                                                    al_draw_bitmap(img_Cards[tablero[6]], 342, 356, 0);
+                                                    al_flip_display();
+                                                }else{
+                                                    al_draw_bitmap(img_Cards[DOWNCARD], 342, 356, 0);
+                                                    al_flip_display();
+                                                }
+
+                                                if(c1 == 7){
+                                                    al_draw_bitmap(img_Cards[tablero[7]], 515, 356, 0);
+                                                    al_flip_display();
+                                                }else{
+                                                    al_draw_bitmap(img_Cards[DOWNCARD], 515, 356, 0);
+                                                    al_flip_display();
+                                                }
+
+                                                if(c1 == 8){
+                                                    al_draw_bitmap(img_Cards[tablero[8]], 699, 356, 0);
+                                                    al_flip_display();
+                                                }else{
+                                                    al_draw_bitmap(img_Cards[DOWNCARD], 699, 356, 0);
+                                                    al_flip_display();
+                                                }
+
+                                                if(c1 == 9){
+                                                    al_draw_bitmap(img_Cards[tablero[9]], 880, 356, 0);
+                                                    al_flip_display();
+                                                }else{
+                                                    al_draw_bitmap(img_Cards[DOWNCARD], 880, 356, 0);
+                                                    al_flip_display();
+                                                }
+                                            }
                                         }
                                         else if(res == 0){
                                             cout<<"El servidor cerro la conxion."<<endl;
