@@ -72,6 +72,83 @@ void destroyAll(){
     al_destroy_timer(timer);
 }
 
+/*void draw_card(int n, int tab[10]){
+    if(n == 0){
+                                            al_draw_bitmap(img_Cards[tab[0]], 163, 132, 0);
+                                            
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 163, 132, 0);
+                                            
+                                        }
+
+                                        if(n == 1){
+                                            al_draw_bitmap(img_Cards[tab[1]], 342, 132, 0);
+                                            
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 342, 132, 0);
+                                            
+                                        }
+
+                                        if(n == 2){
+                                            al_draw_bitmap(img_Cards[tab[2]], 515, 132, 0);
+                                            al_flip_display();
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 515, 132, 0);
+                                            
+                                        }
+
+                                        if(n == 3){
+                                            al_draw_bitmap(img_Cards[tab[3]], 699, 132, 0);
+                                            
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 699, 132, 0);
+                                            
+                                        }
+
+                                        if(n == 4){
+                                            al_draw_bitmap(img_Cards[tab[4]], 880, 132, 0);
+                                            
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 880, 132, 0);
+                                            
+                                        }
+
+                                        if(n == 5){
+                                            al_draw_bitmap(img_Cards[tab[5]], 162, 356, 0);
+                                            
+                                        }else{
+                                            al_draw_bitmap(img_Cards[DOWNCARD], 162, 356, 0);
+                                            
+                                    }
+                                    if(n == 6){
+                                        al_draw_bitmap(img_Cards[tab[6]], 342, 356, 0);
+                                        
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 342, 356, 0);
+                                        
+                                    }
+                                    if(n == 7){
+                                        al_draw_bitmap(img_Cards[tab[7]], 515, 356, 0);
+                                        
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 515, 356, 0);
+                                        
+                                    }
+                                    if(n == 8){
+                                        al_draw_bitmap(img_Cards[tab[8]], 699, 356, 0);
+                                        
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 699, 356, 0);
+                                        
+                                    }
+                                    if(n == 9){
+                                        al_draw_bitmap(img_Cards[tab[9]], 880, 356, 0);
+                                        
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 880, 356, 0);
+                            
+                                    }
+}*/
 
 int main(){
 
@@ -248,9 +325,9 @@ int main(){
 
                         if(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638){///Click Conectar
                             /*Buffer para recivir los datos del servidor*/
-                            char buffer[1200], jugador;
+                            char buffer[1200];
                             bool tuTurno = false;
-                            int tablero[10], intentos = 0;
+                            int tablero[10], intentos = 0, jugador;
 
 
                             if(!cargado){
@@ -331,10 +408,10 @@ int main(){
 
                                 if(buffer[10] == '1'){
                                     tuTurno = true;
-                                    jugador = buffer[10];
+                                    jugador = 1;
                                 }
                                 else
-                                    jugador = '2';
+                                    jugador = 2;
                             }
 
                             al_destroy_event_queue(event_queue);
@@ -346,9 +423,10 @@ int main(){
                             int cards[10];
                             for(int i = 0; i < 10; i++)
                               cards[i] = 99;
-                            //int card1 = 99, card2 = 99, card3 = 99, card4 = 99, card5 = 99;
-                            //int card6 = 99, card7 = 99, card8 = 99, card9 = 99, card10 = 99;
+
                             int firstCard, secondCard;
+                            int score = 0;
+                            char buffScore[5];
                             //bool card1 = false, card2 = false, card3 = false, card4 = false, card5 = false;
                             //bool card6 = false, card7 = false, card8 = false, card9 = false, card10 = false;
                             char respuesta[50];
@@ -378,7 +456,7 @@ int main(){
 
                                 }
 
-                                if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){///Clicks en el tablero
+                                if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && tuTurno){///Clicks en el tablero
 
                                     if(event.mouse.x > 163 && event.mouse.x < 312 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 1
                                         cards[0] = 0;
@@ -477,290 +555,214 @@ int main(){
                                     //char msg[50];
                                     /*Mostrar que es tu turno hacer el movimiento*/
                                     //sprintf(msg, "Jugador %s: ", jugador);
+                                    sprintf(buffScore, "%i", score);
+                                    al_draw_text(fontGame, al_map_rgb(0, 0, 0), 420, 590, ALLEGRO_ALIGN_LEFT, buffScore);
+                                    al_flip_display();
 
-                                    //al_draw_text(fontGame, al_map_rgb(0, 0, 0), 300, 0, ALLEGRO_ALIGN_CENTRE, msg);
+                                    if(cards[0] == 0){
+                                        al_draw_bitmap(img_Cards[tablero[0]], 163, 132, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 163, 132, 0);
+                                        al_flip_display();
+                                    }
+                                    if(cards[1] == 1){
+                                        al_draw_bitmap(img_Cards[tablero[1]], 342, 132, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 342, 132, 0);
+                                        al_flip_display();
+                                    }
+                                    if(cards[2] == 2){
+                                        al_draw_bitmap(img_Cards[tablero[2]], 515, 132, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 515, 132, 0);
+                                        al_flip_display();
+                                    }
+                                    if(cards[3] == 3){
+                                        al_draw_bitmap(img_Cards[tablero[3]], 699, 132, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 699, 132, 0);
+                                        al_flip_display();
+                                    }
+                                    if(cards[4] == 4){
+                                        al_draw_bitmap(img_Cards[tablero[4]], 880, 132, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 880, 132, 0);
+                                        al_flip_display();
+                                    }
+                                    if(cards[5] == 5){
+                                        al_draw_bitmap(img_Cards[tablero[5]], 162, 356, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 162, 356, 0);
+                                        al_flip_display();
+                                    }
+                                    if(cards[6] == 6){
+                                        al_draw_bitmap(img_Cards[tablero[6]], 342, 356, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 342, 356, 0);
+                                        al_flip_display();
+                                    }
+                                    if(cards[7] == 7){
+                                        al_draw_bitmap(img_Cards[tablero[7]], 515, 356, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 515, 356, 0);
+                                        al_flip_display();
+                                    }
+                                    if(cards[8] == 8){
+                                        al_draw_bitmap(img_Cards[tablero[8]], 699, 356, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 699, 356, 0);
+                                        al_flip_display();
+                                    }
+                                    if(cards[9] == 9){
+                                        al_draw_bitmap(img_Cards[tablero[9]], 880, 356, 0);
+                                        al_flip_display();
+                                    }else{
+                                        al_draw_bitmap(img_Cards[DOWNCARD], 880, 356, 0);
+                                        al_flip_display();
+                                    }
+
                                     if(tuTurno){
                                         al_draw_text(fontGame, al_map_rgb(0, 0, 0), 585, 0, ALLEGRO_ALIGN_CENTRE, "¡Tu turno!");
 
-                                        if(cards[0] == 0){
-                                            al_draw_bitmap(img_Cards[tablero[0]], 163, 132, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 163, 132, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[1] == 1){
-                                            al_draw_bitmap(img_Cards[tablero[1]], 342, 132, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 342, 132, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[2] == 2){
-                                            al_draw_bitmap(img_Cards[tablero[2]], 515, 132, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 515, 132, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[3] == 3){
-                                            al_draw_bitmap(img_Cards[tablero[3]], 699, 132, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 699, 132, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[4] == 4){
-                                            al_draw_bitmap(img_Cards[tablero[4]], 880, 132, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 880, 132, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[5] == 5){
-                                            al_draw_bitmap(img_Cards[tablero[5]], 162, 356, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 162, 356, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[6] == 6){
-                                            al_draw_bitmap(img_Cards[tablero[6]], 342, 356, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 342, 356, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[7] == 7){
-                                            al_draw_bitmap(img_Cards[tablero[7]], 515, 356, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 515, 356, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[8] == 8){
-                                            al_draw_bitmap(img_Cards[tablero[8]], 699, 356, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 699, 356, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[9] == 9){
-                                            al_draw_bitmap(img_Cards[tablero[9]], 880, 356, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 880, 356, 0);
-                                            al_flip_display();
-                                        }
-
                                         //Mandar nuestro turno
                                         if(intentos == 2){
-                                            //al_draw_bitmap(img_Tablero, 0, 0, 0);
-                                            //al_flip_display();
+                                            bzero(respuesta, 50);
                                             if(tablero[firstCard] == tablero[secondCard]){
                                                 cout<<"Atinaste"<<endl;
-                                                sprintf(respuesta, "%i%i%i", 3, firstCard, secondCard);                            
+                                                score++;
+                                                sprintf(respuesta, "%i%i%i%i", 5, jugador,firstCard, secondCard);
+                                                cout<<"Enviando: "<<respuesta<<endl;
                                                 res = send(s, respuesta, sizeof(respuesta), 0);
                                                 if(res < 0){
-                                                    perror("Error en send");
+                                                    perror("Error en send()");
                                                     close(s);
                                                     return EXIT_FAILURE;
                                                 }
                                             }
                                             else{
                                                 cout<<"No atinaste"<<endl;
+                                                sprintf(respuesta, "%i%i%i%i", 5, jugador,firstCard, secondCard);
+                                                cout<<"Enviando: "<<respuesta<<endl;
+                                                res = send(s, respuesta, sizeof(respuesta), 0);
+                                                if(res < 0){
+                                                    perror("Error en send()");
+                                                    close(s);
+                                                    return EXIT_FAILURE;
+                                                }
                                                 cards[firstCard] = 99;
                                                 cards[secondCard] = 99;
                                             }
-                                            bzero(respuesta, 50);
-                                            sprintf(respuesta, "%i%i%i%i", 1, 1,firstCard, secondCard);
-                                            cout<<"PAQUETE ENVIAR"<<endl;
-                                            cout<<"Tipo: "<<1<<endl;
-                                            cout<<"Jugador: "<<1<<endl;
-                                            cout<<"Primer carta: "<<firstCard<<endl;
-                                            cout<<"Segunda carta: "<<secondCard<<endl;
 
                                             intentos = 0;
                                             tuTurno = false;
 
                                             al_draw_bitmap(img_Tablero, 0, 0, 0);
                                             al_flip_display();
-                                            //res = write(s, );
                                         }
                                     }
                                     else{
                                         al_draw_text(fontGame, al_map_rgb(0, 0, 0), 585, 0, ALLEGRO_ALIGN_CENTRE, "Esperando...");
 
-                                        /*Volver a dibujar las cartas en el tablero*/
-                                        if(cards[0] == 0){
-                                            al_draw_bitmap(img_Cards[tablero[0]], 163, 132, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 163, 132, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[1] == 1){
-                                            al_draw_bitmap(img_Cards[tablero[1]], 342, 132, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 342, 132, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[2] == 2){
-                                            al_draw_bitmap(img_Cards[tablero[2]], 515, 132, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 515, 132, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[3] == 3){
-                                            al_draw_bitmap(img_Cards[tablero[3]], 699, 132, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 699, 132, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[4] == 4){
-                                            al_draw_bitmap(img_Cards[tablero[4]], 880, 132, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 880, 132, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[5] == 5){
-                                            al_draw_bitmap(img_Cards[tablero[5]], 162, 356, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 162, 356, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[6] == 6){
-                                            al_draw_bitmap(img_Cards[tablero[6]], 342, 356, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 342, 356, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[7] == 7){
-                                            al_draw_bitmap(img_Cards[tablero[7]], 515, 356, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 515, 356, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[8] == 8){
-                                            al_draw_bitmap(img_Cards[tablero[8]], 699, 356, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 699, 356, 0);
-                                            al_flip_display();
-                                        }
-
-                                        if(cards[9] == 9){
-                                            al_draw_bitmap(img_Cards[tablero[9]], 880, 356, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 880, 356, 0);
-                                            al_flip_display();
-                                        }
-
                                         //leer las cartas del otro jugador
-                                        res = read(s, buffer, sizeof(buffer));
+                                        res = recv(s, buffer, sizeof(buffer), 0);
                                         if(res > 0){
                                             buffer[res] = '\0';
-                                            if(buffer[0] == '3'){
-                                                int c1, c2;
-                                                c1 = (int)(buffer[1] - 48);
-                                                c1 = (int)(buffer[2] - 48);
-                                                if(c1 == 1){
-                                                    al_draw_bitmap(img_Cards[tablero[1]], 342, 132, 0);
-                                                    al_flip_display();
-                                                }else{
-                                                    al_draw_bitmap(img_Cards[DOWNCARD], 342, 132, 0);
-                                                    al_flip_display();
+                                            int c1, c2;
+
+                                            c1 = (int)(buffer[0] - 48);
+                                            c2 = (int)(buffer[1] - 48);
+
+                                            if(tablero[c1] == tablero[c2]){
+                                                switch(c1){
+                                                    case 0:
+                                                        cards[0] = 0;
+                                                        break;
+                                                    case 1:
+                                                        cards[1] = 1;
+                                                        break;
+                                                    case 2:
+                                                        cards[2] = 2;
+                                                        break;
+                                                    case 3:
+                                                        cards[3] = 3;
+                                                        break;
+                                                    case 4:
+                                                        cards[4] = 4;
+                                                        break;
+                                                    case 5:
+                                                        cards[5] = 5;
+                                                        break;
+                                                    case 6:
+                                                        cards[6] = 6;
+                                                        break;
+                                                    case 7:
+                                                        cards[7] = 7;
+                                                        break;
+                                                    case 8:
+                                                        cards[8] = 8;
+                                                        break;
+                                                    case 9:
+                                                        cards[9] = 9;
+                                                        break;
                                                 }
 
-                                                if(c1 == 2){
-                                                    al_draw_bitmap(img_Cards[tablero[2]], 515, 132, 0);
-                                                    al_flip_display();
-                                                }else{
-                                                    al_draw_bitmap(img_Cards[DOWNCARD], 515, 132, 0);
-                                                    al_flip_display();
-                                                }
-
-                                                if(c1 == 3){
-                                                    al_draw_bitmap(img_Cards[tablero[3]], 699, 132, 0);
-                                                    al_flip_display();
-                                                }else{
-                                                    al_draw_bitmap(img_Cards[DOWNCARD], 699, 132, 0);
-                                                    al_flip_display();
-                                                }
-
-                                                if(c1 == 4){
-                                                    al_draw_bitmap(img_Cards[tablero[4]], 880, 132, 0);
-                                                    al_flip_display();
-                                                }else{
-                                                    al_draw_bitmap(img_Cards[DOWNCARD], 880, 132, 0);
-                                                    al_flip_display();
-                                                }
-
-                                                if(c1 == 5){
-                                                    al_draw_bitmap(img_Cards[tablero[5]], 162, 356, 0);
-                                                    al_flip_display();
-                                                }else{
-                                                    al_draw_bitmap(img_Cards[DOWNCARD], 162, 356, 0);
-                                                    al_flip_display();
-                                                }
-
-                                                if(c1 == 6){
-                                                    al_draw_bitmap(img_Cards[tablero[6]], 342, 356, 0);
-                                                    al_flip_display();
-                                                }else{
-                                                    al_draw_bitmap(img_Cards[DOWNCARD], 342, 356, 0);
-                                                    al_flip_display();
-                                                }
-
-                                                if(c1 == 7){
-                                                    al_draw_bitmap(img_Cards[tablero[7]], 515, 356, 0);
-                                                    al_flip_display();
-                                                }else{
-                                                    al_draw_bitmap(img_Cards[DOWNCARD], 515, 356, 0);
-                                                    al_flip_display();
-                                                }
-
-                                                if(c1 == 8){
-                                                    al_draw_bitmap(img_Cards[tablero[8]], 699, 356, 0);
-                                                    al_flip_display();
-                                                }else{
-                                                    al_draw_bitmap(img_Cards[DOWNCARD], 699, 356, 0);
-                                                    al_flip_display();
-                                                }
-
-                                                if(c1 == 9){
-                                                    al_draw_bitmap(img_Cards[tablero[9]], 880, 356, 0);
-                                                    al_flip_display();
-                                                }else{
-                                                    al_draw_bitmap(img_Cards[DOWNCARD], 880, 356, 0);
-                                                    al_flip_display();
-                                                }
+                                                switch(c2){
+                                                    case 0:
+                                                        cards[0] = 0;
+                                                        break;
+                                                    case 1:
+                                                        cards[1] = 1;
+                                                        break;
+                                                    case 2:
+                                                        cards[2] = 2;
+                                                        break;
+                                                    case 3:
+                                                        cards[3] = 3;
+                                                        break;
+                                                    case 4:
+                                                        cards[4] = 4;
+                                                        break;
+                                                    case 5:
+                                                        cards[5] = 5;
+                                                        break;
+                                                    case 6:
+                                                        cards[6] = 6;
+                                                        break;
+                                                    case 7:
+                                                        cards[7] = 7;
+                                                        break;
+                                                    case 8:
+                                                        cards[8] = 8;
+                                                        break;
+                                                    case 9:
+                                                        cards[9] = 9;
+                                                        break;
+                                                }    
                                             }
+                                            /*else{
+                                                draw_card(c1, tablero);
+                                                al_flip_display();
+                                                draw_card(c2, tablero);
+                                                al_flip_display();
+                                                cards[c1] = 99;
+                                                cards[c2] = 99;
+                                                al_rest(2.0);
+                                            }*/
+
+                                            
+
+                                            tuTurno = true;
+                                            al_draw_bitmap(img_Tablero, 0, 0, 0);
+                                            al_flip_display();
                                         }
                                         else if(res == 0){
                                             cout<<"El servidor cerro la conxion."<<endl;
