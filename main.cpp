@@ -372,18 +372,10 @@ int main(){
                                     return EXIT_FAILURE;
                                 }
 
-                                /*Hacer el socket no bloqueante*/
-                                int flags;
-                                flags = fcntl (s, F_GETFL);
-                                flags = flags | O_NONBLOCK;
-                                res = fcntl (s, F_SETFL, flags);
-                                if(res < 0){
-                                    perror("Error en fcntl()");
-                                    close(s);
-                                    return EXIT_FAILURE;
-                                }
+                                
 
                                 /*Recibir tablero  y que número de jugador nos tocó*/
+                                fflush(stdout);
                                 bzero(buffer, sizeof(buffer));
                                 res = read(s, buffer, sizeof(buffer));
                                 if(res > 0){
@@ -412,6 +404,17 @@ int main(){
                                 }
                                 else
                                     jugador = 2;
+
+                                /*Hacer el socket no bloqueante*/
+                                int flags;
+                                flags = fcntl (s, F_GETFL);
+                                flags = flags | O_NONBLOCK;
+                                res = fcntl (s, F_SETFL, flags);
+                                if(res < 0){
+                                    perror("Error en fcntl()");
+                                    close(s);
+                                    return EXIT_FAILURE;
+                                }
                             }
 
                             al_destroy_event_queue(event_queue);
