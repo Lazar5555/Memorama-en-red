@@ -24,6 +24,8 @@
 #define FPS 60
 #define EXIT_PAUSE 5.0
 
+#define WAITING_CODE "9999"
+
 #define DOWNCARD 0
 #define UBUNTU 1
 #define DEBIAN 2
@@ -40,6 +42,7 @@ ALLEGRO_EVENT_QUEUE *event_queue;
 ALLEGRO_BITMAP *img_main, *img_mainStart, *img_mainExit, *img_getIP, *img_getIPCon, *img_Tablero, *img_getIPBox, *img_getIPBoxCon;
 ALLEGRO_BITMAP *img_Cards[6];
 ALLEGRO_BITMAP *img_failConection;
+ALLEGRO_BITMAP *imgs_error[2];
 ALLEGRO_FONT *font, *fontGame;
 ALLEGRO_TIMER *timer;
 
@@ -64,6 +67,7 @@ void destroyAll(){
     al_destroy_bitmap(img_Cards[ARCH]);
     al_destroy_bitmap(img_Cards[SUSE]);
     al_destroy_bitmap(img_failConection);
+    al_destroy_bitmap(imgs_error[0]);
     //Fuente
     al_destroy_font(font);
     al_destroy_font(fontGame);
@@ -75,18 +79,18 @@ void destroyAll(){
 /*void draw_card(int n, int tab[10]){
     if(n == 0){
                                             al_draw_bitmap(img_Cards[tab[0]], 163, 132, 0);
-                                            
+
                                         }else{
                                             al_draw_bitmap(img_Cards[DOWNCARD], 163, 132, 0);
-                                            
+
                                         }
 
                                         if(n == 1){
                                             al_draw_bitmap(img_Cards[tab[1]], 342, 132, 0);
-                                            
+
                                         }else{
                                             al_draw_bitmap(img_Cards[DOWNCARD], 342, 132, 0);
-                                            
+
                                         }
 
                                         if(n == 2){
@@ -94,59 +98,59 @@ void destroyAll(){
                                             al_flip_display();
                                         }else{
                                             al_draw_bitmap(img_Cards[DOWNCARD], 515, 132, 0);
-                                            
+
                                         }
 
                                         if(n == 3){
                                             al_draw_bitmap(img_Cards[tab[3]], 699, 132, 0);
-                                            
+
                                         }else{
                                             al_draw_bitmap(img_Cards[DOWNCARD], 699, 132, 0);
-                                            
+
                                         }
 
                                         if(n == 4){
                                             al_draw_bitmap(img_Cards[tab[4]], 880, 132, 0);
-                                            
+
                                         }else{
                                             al_draw_bitmap(img_Cards[DOWNCARD], 880, 132, 0);
-                                            
+
                                         }
 
                                         if(n == 5){
                                             al_draw_bitmap(img_Cards[tab[5]], 162, 356, 0);
-                                            
+
                                         }else{
                                             al_draw_bitmap(img_Cards[DOWNCARD], 162, 356, 0);
-                                            
+
                                     }
                                     if(n == 6){
                                         al_draw_bitmap(img_Cards[tab[6]], 342, 356, 0);
-                                        
+
                                     }else{
                                         al_draw_bitmap(img_Cards[DOWNCARD], 342, 356, 0);
-                                        
+
                                     }
                                     if(n == 7){
                                         al_draw_bitmap(img_Cards[tab[7]], 515, 356, 0);
-                                        
+
                                     }else{
                                         al_draw_bitmap(img_Cards[DOWNCARD], 515, 356, 0);
-                                        
+
                                     }
                                     if(n == 8){
                                         al_draw_bitmap(img_Cards[tab[8]], 699, 356, 0);
-                                        
+
                                     }else{
                                         al_draw_bitmap(img_Cards[DOWNCARD], 699, 356, 0);
-                                        
+
                                     }
                                     if(n == 9){
                                         al_draw_bitmap(img_Cards[tab[9]], 880, 356, 0);
-                                        
+
                                     }else{
                                         al_draw_bitmap(img_Cards[DOWNCARD], 880, 356, 0);
-                            
+
                                     }
 }*/
 
@@ -181,6 +185,7 @@ int main(){
     img_getIPBox = al_load_bitmap("imgs/getIPBox.png");
     img_getIPBoxCon = al_load_bitmap("imgs/getIPBoxCon.png");
     /*Imagenes de error*/
+    imgs_error[0] = al_load_bitmap("imgs/waiting_player.png");
     img_failConection = al_load_bitmap("imgs/FailConection.png");
     /*Imagenes del tablero*/
     img_Cards[DOWNCARD] = al_load_bitmap("imgs/DownCard.png");
@@ -326,7 +331,9 @@ int main(){
                         if(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638){///Click Conectar
                             /*Buffer para recivir los datos del servidor*/
                             char buffer[1200];
-                            bool tuTurno = false;
+                            bool tuTurno = false, waiting = true;
+                            bool card0 = false, card1 = false, card2 = false, card3 = false, card4 = false;
+                            bool card5 = false, card6 = false, card7 = false, card8 = false, card9 = false;
                             int tablero[10], intentos = 0, jugador;
 
 
@@ -372,10 +379,9 @@ int main(){
                                     return EXIT_FAILURE;
                                 }
 
-                                
+
 
                                 /*Recibir tablero  y que número de jugador nos tocó*/
-                                fflush(stdout);
                                 bzero(buffer, sizeof(buffer));
                                 res = read(s, buffer, sizeof(buffer));
                                 if(res > 0){
@@ -416,10 +422,8 @@ int main(){
                                     return EXIT_FAILURE;
                                 }
                             }
-
                             al_destroy_event_queue(event_queue);
                             event_queue = al_create_event_queue();
-
 
                             redraw = true;
                             bool gameOver = false;
@@ -430,8 +434,6 @@ int main(){
                             int firstCard, secondCard;
                             int score = 0;
                             char buffScore[5];
-                            //bool card1 = false, card2 = false, card3 = false, card4 = false, card5 = false;
-                            //bool card6 = false, card7 = false, card8 = false, card9 = false, card10 = false;
                             char respuesta[50];
 
                             al_register_event_source(event_queue, al_get_display_event_source(display));
@@ -459,93 +461,113 @@ int main(){
 
                                 }
 
-                                if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && tuTurno){///Clicks en el tablero
+                                if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && tuTurno){
 
-                                    if(event.mouse.x > 163 && event.mouse.x < 312 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 1
+                                    if(event.mouse.x > 163 && event.mouse.x < 312 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2 && !card0){///Carta 1
                                         cards[0] = 0;
-                                        if(intentos == 0)
+                                        if(intentos == 0){
+                                            card0 = true;
                                             firstCard = cards[0];
+                                        }
                                         else if(intentos == 1)
                                             secondCard = cards[0];
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 342 && event.mouse.x < 491 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 2
+                                    if(event.mouse.x > 342 && event.mouse.x < 491 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2 && !card1){///Carta 2
                                         cards[1] = 1;
-                                        if(intentos == 0)
+                                        if(intentos == 0){
+                                            card1 = true;
                                             firstCard = cards[1];
+                                        }
                                         else if(intentos == 1)
                                             secondCard = cards[1];
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 515 && event.mouse.x < 664 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 3
+                                    if(event.mouse.x > 515 && event.mouse.x < 664 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2 && !card2){///Carta 3
                                         cards[2] = 2;
-                                        if(intentos == 0)
+                                        if(intentos == 0){
+                                            card2 = true;
                                             firstCard = cards[2];
+                                        }
                                         else if(intentos == 1)
                                             secondCard = cards[2];
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 4
+                                    if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2  && !card3){///Carta 4
                                         cards[3] = 3;
-                                        if(intentos == 0)
+                                        if(intentos == 0){
+                                            card3 = true;
                                             firstCard = cards[3];
+                                        }
                                         else if(intentos == 1)
                                             secondCard = cards[3];
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 880 && event.mouse.x < 1029 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2){///Carta 5
+                                    if(event.mouse.x > 880 && event.mouse.x < 1029 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2  && !card4){///Carta 5
                                         cards[4] = 4;
-                                        if(intentos == 0)
+                                        if(intentos == 0){
+                                            card4 = true;
                                             firstCard = cards[4];
+                                        }
                                         else if(intentos == 1)
                                             secondCard = cards[4];
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 162 && event.mouse.x < 311 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 6
+                                    if(event.mouse.x > 162 && event.mouse.x < 311 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2 && !card5){///carta 6
                                         cards[5] = 5;
-                                        if(intentos == 0)
+                                        if(intentos == 0){
+                                            card5 = true;
                                             firstCard = cards[5];
+                                        }
                                         else if(intentos == 1)
                                             secondCard = cards[5];
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 342 && event.mouse.x < 487 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 7
+                                    if(event.mouse.x > 342 && event.mouse.x < 487 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2 && !card6){///carta 7
                                         cards[6] = 6;
-                                        if(intentos == 0)
+                                        if(intentos == 0){
+                                            card6 = true;
                                             firstCard = cards[6];
+                                        }
                                         else if(intentos == 1)
                                             secondCard = cards[6];
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 516 && event.mouse.x < 665 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 8
+                                    if(event.mouse.x > 516 && event.mouse.x < 665 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2  && !card7){///carta 8
                                         cards[7] = 7;
-                                        if(intentos == 0)
+                                        if(intentos == 0){
+                                            card7 = true;
                                             firstCard = cards[7];
+                                        }
                                         else if(intentos == 1)
                                             secondCard = cards[7];
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 9
+                                    if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2  && !card8){///carta 9
                                         cards[8] = 8;
-                                        if(intentos == 0)
+                                        if(intentos == 0){
+                                            card8 = true;
                                             firstCard = cards[8];
+                                        }
                                         else if(intentos == 1)
                                             secondCard = cards[8];
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 880 && event.mouse.x < 1028 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2){///carta 10
+                                    if(event.mouse.x > 880 && event.mouse.x < 1028 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2 && !card9){///carta 10
                                         cards[9] = 9;
-                                        if(intentos == 0)
+                                        if(intentos == 0){
+                                            card9 = true;
                                             firstCard = cards[9];
+                                        }
                                         else if(intentos == 1)
                                             secondCard = cards[9];
 
@@ -553,11 +575,36 @@ int main(){
                                     }
                                 }
 
+                                /*Manejo de errores
+                                bzero(buffer, sizeof(buffer));
+                                res = recv(s, buffer, sizeof(buffer), 0);
+                                if(res > 0){
+                                    if(strcmp(buffer, WAITING_CODE) == 0){
+                                        waiting = true;
+                                        al_draw_bitmap(imgs_error[0], 350, 175, 0);
+                                        al_flip_display();
+                                    }
+                                    if(strcmp(buffer, "8888") == 0){
+                                        waiting = false;
+                                    }
+                                }
+                                else if(res == 0){
+                                    cout<<"El servidor cerro la conxion."<<endl;
+                                    close(s);
+                                    return EXIT_FAILURE;
+                                }
+                                else if(errno == EWOULDBLOCK || errno == EAGAIN){
+                                    continue;
+                                }
+                                else{
+                                    perror("Error en recv() manejo de errores:");
+                                    close(s);
+                                    return EXIT_FAILURE;
+                                }*/
+
                                 if(redraw && al_is_event_queue_empty(event_queue)){
                                     redraw = false;
-                                    //char msg[50];
-                                    /*Mostrar que es tu turno hacer el movimiento*/
-                                    //sprintf(msg, "Jugador %s: ", jugador);
+
                                     sprintf(buffScore, "%i", score);
                                     al_draw_text(fontGame, al_map_rgb(0, 0, 0), 420, 590, ALLEGRO_ALIGN_LEFT, buffScore);
                                     al_flip_display();
@@ -667,6 +714,8 @@ int main(){
 
                                             intentos = 0;
                                             tuTurno = false;
+                                            card0 = false;card1 = false;card2 = false;card3 = false;card4 = false;
+                                            card5 = false;card6 = false;card7 = false;card8 = false;card9 = false;
 
                                             al_draw_bitmap(img_Tablero, 0, 0, 0);
                                             al_flip_display();
@@ -749,7 +798,7 @@ int main(){
                                                     case 9:
                                                         cards[9] = 9;
                                                         break;
-                                                }    
+                                                }
                                             }
                                             /*else{
                                                 draw_card(c1, tablero);
@@ -761,7 +810,7 @@ int main(){
                                                 al_rest(2.0);
                                             }*/
 
-                                            
+
 
                                             tuTurno = true;
                                             al_draw_bitmap(img_Tablero, 0, 0, 0);
@@ -774,6 +823,11 @@ int main(){
                                         }
                                         else if(errno == EWOULDBLOCK || errno == EAGAIN){
                                             continue;
+                                        }
+                                        else{
+                                            perror("Error en recv() esperando turno:");
+                                            close(s);
+                                            return EXIT_FAILURE;
                                         }
                                     }
                                 }
