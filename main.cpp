@@ -3,13 +3,13 @@
 #include <cstdlib>
 #include <cstring>
 
-/*Librerías allegro*/
+//Librer�as allegro
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 
-/*Librerías para red*/
+//Librer�as para red
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
@@ -183,7 +183,6 @@ int main(){
     img_mainExit = al_load_bitmap("imgs/main_exit.png");
     img_getIP = al_load_bitmap("imgs/getIP.png");
     img_getIPCon = al_load_bitmap("imgs/getIPCon.png");
-    img_Tablero = al_load_bitmap("imgs/Tablero.png");
     img_getIPBox = al_load_bitmap("imgs/getIPBox.png");
     img_getIPBoxCon = al_load_bitmap("imgs/getIPBoxCon.png");
     //Imagenes de error
@@ -333,7 +332,7 @@ int main(){
                         }
 
                         if(event2.mouse.x > 812 && event2.mouse.x < 1111 && event2.mouse.y > 557 && event2.mouse.y < 638){///Click Conectar
-                            /*Buffer para recivir los datos del servidor*/
+                            //Buffer para recivir los datos del servidor
                             char buffer[1200];
                             bool tuTurno = false, waiting = false;
                             bool card0 = false, card1 = false, card2 = false, card3 = false, card4 = false;
@@ -345,7 +344,7 @@ int main(){
                                 cargado = true;
                                 char IP[50];
 
-                                //resolución de nombres para conectar al servidor
+                                //resoluci�n de nombres para conectar al servidor
                                 res = getaddrinfo(host, "25252", &hints, &lista);
                                 if(res != 0){
                                     printf ("Error en la resolución de nombres: %s\n", gai_strerror (res));
@@ -383,7 +382,7 @@ int main(){
                                     return EXIT_FAILURE;
                                 }
 
-                                //Recibir tablero  y que número de jugador nos tocó
+                                //Recibir tablero  y que número de jugador nos toc�
                                 bzero(buffer, sizeof(buffer));
                                 res = read(s, buffer, sizeof(buffer));
                                 if(res > 0){
@@ -410,9 +409,12 @@ int main(){
                                     tuTurno = true;
                                     waiting = true;
                                     jugador = 1;
+                                    img_Tablero = al_load_bitmap("imgs/tablero_1.png");
                                 }
-                                else
+                                else{
                                     jugador = 2;
+                                    img_Tablero = al_load_bitmap("imgs/tablero_2.png");
+                                }
 
                                 //Hacer el socket no bloqueante
                                 int flags;
@@ -661,7 +663,7 @@ int main(){
                                         }
 
                                         if(tuTurno){
-                                            al_draw_text(fontGame, al_map_rgb(0, 0, 0), 585, 0, ALLEGRO_ALIGN_CENTRE, "¡Tu turno!");
+                                            al_draw_text(fontGame, al_map_rgb(0, 0, 0), 650, 0, ALLEGRO_ALIGN_CENTRE, "¡Tu turno!");
 
                                             //Mandar nuestro turno
                                             if(intentos == 2){
@@ -702,7 +704,7 @@ int main(){
                                             }
                                         }
                                         else{
-                                            al_draw_text(fontGame, al_map_rgb(0, 0, 0), 585, 0, ALLEGRO_ALIGN_CENTRE, "Esperando...");
+                                            al_draw_text(fontGame, al_map_rgb(0, 0, 0), 670, 0, ALLEGRO_ALIGN_CENTRE, "Esperando...");
 
                                             //leer las cartas del otro jugador
                                             res = recv(s, buffer, sizeof(buffer), 0);
