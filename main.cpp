@@ -42,7 +42,7 @@ ALLEGRO_EVENT_QUEUE *event_queue;
 ALLEGRO_BITMAP *img_main, *img_mainStart, *img_mainExit, *img_getIP, *img_getIPCon, *img_Tablero, *img_getIPBox, *img_getIPBoxCon;
 ALLEGRO_BITMAP *img_Cards[6];
 ALLEGRO_BITMAP *img_failConection;
-ALLEGRO_BITMAP *img_waiting, *img_closedServer;
+ALLEGRO_BITMAP *img_waiting, *img_closedServer, *img_leftGame;
 ALLEGRO_FONT *font, *fontGame;
 ALLEGRO_TIMER *timer;
 
@@ -69,6 +69,7 @@ void destroyAll(){
     al_destroy_bitmap(img_failConection);
     al_destroy_bitmap(img_waiting);
     al_destroy_bitmap(img_closedServer);
+    al_destroy_bitmap(img_leftGame);
     //Fuente
     al_destroy_font(font);
     al_destroy_font(fontGame);
@@ -189,6 +190,7 @@ int main(){
     img_waiting = al_load_bitmap("imgs/waiting_player.png");
     img_closedServer = al_load_bitmap("imgs/closed_server.png");
     img_failConection = al_load_bitmap("imgs/FailConection.png");
+    img_leftGame = al_load_bitmap("imgs/left_game.png");
     //Imagenes del tablero
     img_Cards[DOWNCARD] = al_load_bitmap("imgs/DownCard.png");
     img_Cards[UBUNTU] = al_load_bitmap("imgs/UbuntuCard.png");
@@ -461,7 +463,7 @@ int main(){
 
                                 }
 
-                                if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && tuTurno){
+                                if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && tuTurno && !waiting){
 
                                     if(event.mouse.x > 163 && event.mouse.x < 312 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2 && !card0){///Carta 1
                                         cards[0] = 0;
@@ -706,6 +708,17 @@ int main(){
                                             res = recv(s, buffer, sizeof(buffer), 0);
                                             if(res > 0){
                                                 buffer[res] = '\0';
+
+                                                //Informar si el otro jugador abandonó la partida
+                                                if(strcmp(buffer, "7777") == 0){
+                                                    al_draw_bitmap(img_leftGame, 350, 175, 0);
+                                                    al_flip_display();
+                                                    al_rest(EXIT_PAUSE);
+                                                    close(s);
+
+                                                    return EXIT_SUCCESS;
+                                                }
+
                                                 int c1, c2;
 
                                                 c1 = (int)(buffer[0] - 48);
@@ -815,11 +828,20 @@ int main(){
                                     res = recv(s, buffer, sizeof(buffer), 0);
                                     if(res > 0){
                                         buffer[res] = '\0';
-                                        cout<<"Se recibio: "<<buffer<<endl;
+                                        cout<<"Se recibió código: "<<buffer<<endl;
                                         if(strcmp(buffer, "8888") == 0){
                                             waiting = false;
                                             al_draw_bitmap(img_Tablero, 0, 0, 0);
                                             al_flip_display();
+                                        }
+
+                                        if(strcmp(buffer, "7777") == 0){
+                                            al_draw_bitmap(img_leftGame, 350, 175, 0);
+                                            al_flip_display();
+                                            al_rest(EXIT_PAUSE);
+                                            close(s);
+
+                                            return EXIT_SUCCESS;
                                         }
                                     }
                                     else if(res == 0){
