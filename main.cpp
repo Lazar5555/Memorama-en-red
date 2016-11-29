@@ -78,84 +78,6 @@ void destroyAll(){
     al_destroy_timer(timer);
 }
 
-/*void draw_card(int n, int tab[10]){
-    if(n == 0){
-                                            al_draw_bitmap(img_Cards[tab[0]], 163, 132, 0);
-
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 163, 132, 0);
-
-                                        }
-
-                                        if(n == 1){
-                                            al_draw_bitmap(img_Cards[tab[1]], 342, 132, 0);
-
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 342, 132, 0);
-
-                                        }
-
-                                        if(n == 2){
-                                            al_draw_bitmap(img_Cards[tab[2]], 515, 132, 0);
-                                            al_flip_display();
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 515, 132, 0);
-
-                                        }
-
-                                        if(n == 3){
-                                            al_draw_bitmap(img_Cards[tab[3]], 699, 132, 0);
-
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 699, 132, 0);
-
-                                        }
-
-                                        if(n == 4){
-                                            al_draw_bitmap(img_Cards[tab[4]], 880, 132, 0);
-
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 880, 132, 0);
-
-                                        }
-
-                                        if(n == 5){
-                                            al_draw_bitmap(img_Cards[tab[5]], 162, 356, 0);
-
-                                        }else{
-                                            al_draw_bitmap(img_Cards[DOWNCARD], 162, 356, 0);
-
-                                    }
-                                    if(n == 6){
-                                        al_draw_bitmap(img_Cards[tab[6]], 342, 356, 0);
-
-                                    }else{
-                                        al_draw_bitmap(img_Cards[DOWNCARD], 342, 356, 0);
-
-                                    }
-                                    if(n == 7){
-                                        al_draw_bitmap(img_Cards[tab[7]], 515, 356, 0);
-
-                                    }else{
-                                        al_draw_bitmap(img_Cards[DOWNCARD], 515, 356, 0);
-
-                                    }
-                                    if(n == 8){
-                                        al_draw_bitmap(img_Cards[tab[8]], 699, 356, 0);
-
-                                    }else{
-                                        al_draw_bitmap(img_Cards[DOWNCARD], 699, 356, 0);
-
-                                    }
-                                    if(n == 9){
-                                        al_draw_bitmap(img_Cards[tab[9]], 880, 356, 0);
-
-                                    }else{
-                                        al_draw_bitmap(img_Cards[DOWNCARD], 880, 356, 0);
-
-                                    }
-}*/
-
 int main(){
 
     bool salir = false;
@@ -354,6 +276,7 @@ int main(){
                                     al_draw_bitmap(img_failConection, 350, 175, 0);
                                     al_flip_display();
                                     al_rest(EXIT_PAUSE);
+                                    destroyAll();
                                     return EXIT_FAILURE;
                                 }
 
@@ -381,6 +304,7 @@ int main(){
                                     al_draw_bitmap(img_failConection, 350, 175, 0);
                                     al_flip_display();
                                     al_rest(EXIT_PAUSE);
+                                    destroyAll();
                                     return EXIT_FAILURE;
                                 }
 
@@ -399,6 +323,7 @@ int main(){
                                 else if(res == 0){
                                     cout<<"El servidor cerro la conxion."<<endl;
                                     close(s);
+                                    destroyAll();
                                     return EXIT_FAILURE;
                                 }
                                 else if(errno == EWOULDBLOCK || errno == EAGAIN){
@@ -680,6 +605,7 @@ int main(){
                                                     if(res < 0){
                                                         perror("Error en send()");
                                                         close(s);
+                                                        destroyAll();
                                                         return EXIT_FAILURE;
                                                     }
                                                 }
@@ -691,6 +617,7 @@ int main(){
                                                     if(res < 0){
                                                         perror("Error en send()");
                                                         close(s);
+                                                        destroyAll();
                                                         return EXIT_FAILURE;
                                                     }
                                                     cards[firstCard] = 99;
@@ -735,9 +662,9 @@ int main(){
                                                     al_flip_display();
 
                                                     al_rest(EXIT_PAUSE);
-                                                    gameOver = true;
-                                                    salirServerAddr = true;
-                                                    salir = true;
+                                                    close(s);
+                                                    destroyAll();
+                                                    return EXIT_SUCCESS;
                                                 }
 
                                                 if(buffer[4] == 'L'){
@@ -749,9 +676,9 @@ int main(){
                                                     al_flip_display();
 
                                                     al_rest(EXIT_PAUSE);
-                                                    gameOver = true;
-                                                    salirServerAddr = true;
-                                                    salir = true;
+                                                    close(s);
+                                                    destroyAll();
+                                                    return EXIT_SUCCESS;
                                                 }
 
                                                 int c1, c2;
@@ -835,7 +762,9 @@ int main(){
                                                 al_draw_bitmap(img_closedServer, 350, 175, 0);
                                                 al_flip_display();
                                                 al_rest(EXIT_PAUSE);
+
                                                 close(s);
+                                                destroyAll();
                                                 return EXIT_SUCCESS;
                                             }
                                             else if(errno == EWOULDBLOCK || errno == EAGAIN){
@@ -844,6 +773,7 @@ int main(){
                                             else{
                                                 perror("Error en recv() esperando turno:");
                                                 close(s);
+                                                destroyAll();
                                                 return EXIT_FAILURE;
                                             }
                                         }
@@ -865,7 +795,7 @@ int main(){
                                             al_flip_display();
                                             al_rest(EXIT_PAUSE);
                                             close(s);
-
+                                            destroyAll();
                                             return EXIT_SUCCESS;
                                         }
 
@@ -878,6 +808,8 @@ int main(){
                                             al_flip_display();
 
                                             al_rest(EXIT_PAUSE);
+                                            close(s);
+                                            return EXIT_SUCCESS;
                                         }
 
                                         if(buffer[4] == 'W'){
@@ -897,7 +829,7 @@ int main(){
                                         al_flip_display();
                                         al_rest(EXIT_PAUSE);
                                         close(s);
-
+                                        destroyAll();
                                         return EXIT_SUCCESS;
                                     }
                                     else if(errno == EWOULDBLOCK || errno == EAGAIN){
@@ -906,20 +838,18 @@ int main(){
                                     else{
                                         perror("Error en recv() manejo de errores:");
                                         close(s);
+                                        destroyAll();
                                         return EXIT_FAILURE;
                                     }
                                 }
                             }
                         }
-
                     }///Fin mouse down pantalla getIP
-
                 }
             }//Fin click comenzar
             if(event.mouse.x > 752 && event.mouse.x < 1031 && event.mouse.y > 560 && event.mouse.y < 637)//Click Salir
                 salir = true;
         }
-
     }//End main looṕ
 
     destroyAll();
