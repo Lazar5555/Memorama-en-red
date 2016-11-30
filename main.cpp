@@ -263,7 +263,6 @@ int main(){
                             bool card5 = false, card6 = false, card7 = false, card8 = false, card9 = false;
                             int tablero[10], intentos = 0, jugador;
 
-
                             if(!cargado){
                                 cargado = true;
                                 char IP[50];
@@ -809,6 +808,7 @@ int main(){
 
                                             al_rest(EXIT_PAUSE);
                                             close(s);
+                                            destroyAll();
                                             return EXIT_SUCCESS;
                                         }
 
@@ -821,6 +821,9 @@ int main(){
                                             al_flip_display();
 
                                             al_rest(EXIT_PAUSE);
+                                            close(s);
+                                            destroyAll();
+                                            return EXIT_SUCCESS;
                                         }
                                     }
                                     else if(res == 0){
