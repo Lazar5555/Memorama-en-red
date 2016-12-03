@@ -394,7 +394,7 @@ int main(){
 
                                 if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && tuTurno && !waiting){
 
-                                    if(event.mouse.x > 163 && event.mouse.x < 312 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2 && !card0){///Carta 1
+                                    if(event.mouse.x > 163 && event.mouse.x < 312 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2 && !card0 && cards[0] != 0){///Carta 1
                                         cards[0] = 0;
                                         if(intentos == 0){
                                             card0 = true;
@@ -405,7 +405,7 @@ int main(){
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 342 && event.mouse.x < 491 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2 && !card1){///Carta 2
+                                    if(event.mouse.x > 342 && event.mouse.x < 491 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2 && !card1 && cards[1] != 1){///Carta 2
                                         cards[1] = 1;
                                         if(intentos == 0){
                                             card1 = true;
@@ -416,7 +416,7 @@ int main(){
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 515 && event.mouse.x < 664 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2 && !card2){///Carta 3
+                                    if(event.mouse.x > 515 && event.mouse.x < 664 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2 && !card2 && cards[2] != 2){///Carta 3
                                         cards[2] = 2;
                                         if(intentos == 0){
                                             card2 = true;
@@ -427,7 +427,7 @@ int main(){
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2  && !card3){///Carta 4
+                                    if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2  && !card3 && cards[3] != 3){///Carta 4
                                         cards[3] = 3;
                                         if(intentos == 0){
                                             card3 = true;
@@ -438,7 +438,7 @@ int main(){
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 880 && event.mouse.x < 1029 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2  && !card4){///Carta 5
+                                    if(event.mouse.x > 880 && event.mouse.x < 1029 && event.mouse.y > 132 && event.mouse.y < 340 && intentos < 2  && !card4 && cards[4] != 4){///Carta 5
                                         cards[4] = 4;
                                         if(intentos == 0){
                                             card4 = true;
@@ -449,7 +449,7 @@ int main(){
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 162 && event.mouse.x < 311 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2 && !card5){///carta 6
+                                    if(event.mouse.x > 162 && event.mouse.x < 311 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2 && !card5 && cards[5] != 5){///carta 6
                                         cards[5] = 5;
                                         if(intentos == 0){
                                             card5 = true;
@@ -460,7 +460,7 @@ int main(){
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 342 && event.mouse.x < 487 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2 && !card6){///carta 7
+                                    if(event.mouse.x > 342 && event.mouse.x < 487 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2 && !card6 && cards[6] != 6){///carta 7
                                         cards[6] = 6;
                                         if(intentos == 0){
                                             card6 = true;
@@ -471,7 +471,7 @@ int main(){
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 516 && event.mouse.x < 665 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2  && !card7){///carta 8
+                                    if(event.mouse.x > 516 && event.mouse.x < 665 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2  && !card7 && cards[7] != 7){///carta 8
                                         cards[7] = 7;
                                         if(intentos == 0){
                                             card7 = true;
@@ -482,7 +482,7 @@ int main(){
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2  && !card8){///carta 9
+                                    if(event.mouse.x > 699 && event.mouse.x < 848 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2  && !card8 && cards[8] != 8){///carta 9
                                         cards[8] = 8;
                                         if(intentos == 0){
                                             card8 = true;
@@ -493,7 +493,7 @@ int main(){
 
                                         intentos++;
                                     }
-                                    if(event.mouse.x > 880 && event.mouse.x < 1028 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2 && !card9){///carta 10
+                                    if(event.mouse.x > 880 && event.mouse.x < 1028 && event.mouse.y > 356 && event.mouse.y < 564 && intentos < 2 && !card9 && cards[9] != 9){///carta 10
                                         cards[9] = 9;
                                         if(intentos == 0){
                                             card9 = true;
@@ -847,13 +847,13 @@ int main(){
                                 }
                             }
                         }
-                    }///Fin mouse down pantalla getIP
+                    }
                 }
-            }//Fin click comenzar
+            }
             if(event.mouse.x > 752 && event.mouse.x < 1031 && event.mouse.y > 560 && event.mouse.y < 637)//Click Salir
                 salir = true;
         }
-    }//End main looṕ
+    }
 
     destroyAll();
     close(s);
