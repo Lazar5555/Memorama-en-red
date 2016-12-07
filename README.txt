@@ -1,22 +1,19 @@
-////////////////////////Windows////////////////////////////////////
+							MEMORAMA EN RED
 
--Para ejecutar en Windows agregar esto a Build Options... -> Linker    settings:
-	liballegro-5.0.10-monolith-mt.a
+Memorama en red es un videojuego que consiste en el tradicional juego de memorama. El programa permite a los los usuarios jugar en la red local con el uso de sockets de red. Inicialmente para plataformas LINUX utilizando Allegro 5.
 
-eliminar el archivo main.o en la carpeta Debug y volver a compilar.
+-Instalación de Allegro 5 en WINDOWS:
+	http://creatusjuegosdecero.webege.com/index.php?topic=115.0
 
-////////////////////////////Linux//////////////////////////////////
+-Instalación de Allegro 5 en LINUX:
+	https://emman31.wordpress.com/2013/01/21/ubuntu-12-04-installing-allegro-5-on-codeblocks/comment-page-1/
+	
+-Compilar Allegro 5 desde CodeBlocks en WINDOWS:
+	Agregar a Build Options --> Linker settings:
+		"liballegro-5.0.10-monolith-mt.a"
 
-Para compilar en Linux eliminar el archivo main.o en la carpeta Debug y volver a compilar el proyecto.
-Quitar de Linker Settings: liballegro-5.0.10-monolith-mt.a *si lo tiene
-y agregara las librerias .so de allegro a linker settings.
+-Compilar  Allegro 5 desde CodeBlock en LINUX:
+	Quitar de Linker Settings "liballegro-5.0.10-monolith-mt.a" (si lo tiene) y agregara las librerias .so de allegro a 		linker settings.
 
-
-//////////////////////////////////PARA COMPILAR DESDE TERMINAL EN LINUX///////////////////////////////////
-
-g++ [nombre del archivo].cpp `pkg-config --cflags --libs [libreria de allegro]-5.0 [libreria de allegro 2]-5.0...`
-
-Para este programa sería:
-
-g++ main.cpp `pkg-config --cflags --libs allegro-5.0 allegro_image-5.0 allegro_font-5.0 allegro_ttf-5.0`
-
+-Compilar desde la terminal LINUX:
+	g++ main.cpp `pkg-config --cflags --libs allegro-5.0 allegro_image-5.0 allegro_font-5.0 allegro_ttf-5.0`
